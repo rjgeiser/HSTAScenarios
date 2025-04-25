@@ -1,0 +1,77 @@
+
+:root {
+  --bg: #f9f9f9;
+  --text: #222;
+  --card: #fff;
+  --accent: #005ea2;
+  --accent-hover: #00447d;
+}
+
+body.dark {
+  --bg: #1c1c1c;
+  --text: #eee;
+  --card: #2a2a2a;
+  --accent: #4dabf7;
+  --accent-hover: #339af0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 2rem;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+h1, h2 {
+  margin-top: 0;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+footer {
+  margin-top: 2rem;
+  font-size: 0.85em;
+  color: var(--text);
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
+button {
+  background-color: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .container {
+    display: block;
+  }
+
+  #hsta-form {
+    display: none;
+  }
+
+  #results-section {
+    border: none;
+    padding: 0;
+  }
+
+  button {
+    display: none;
+  }
+}

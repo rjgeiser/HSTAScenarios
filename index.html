@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HSTA Scenario Builder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Home Service Transfer Allowance (HSTA) Scenario Builder</h1>
+    <p>This tool estimates your HSTA allowance under both the Fixed and Actual pathways and recommends the most beneficial option based on your inputs.</p>
+    <button id="theme-toggle">Toggle Dark Mode</button>
+  </header>
+
+  <div class="container">
+    <form id="hsta-form">
+      <fieldset>
+        <legend>Travel Dates</legend>
+        <label for="departure-date">Expected Departure Date from Post:</label>
+        <input type="date" id="departure-date" name="departure-date" required>
+
+        <label for="separation-date">Official Separation Date from USAID:</label>
+        <input type="date" id="separation-date" name="separation-date" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>Family Composition</legend>
+        <label for="has-family">Are you transferring with family members?</label>
+        <select id="has-family" name="has-family" required>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div id="family-details" style="display:none;">
+          <label for="num-efms">How many family members are accompanying you?</label>
+          <input type="number" id="num-efms" name="num-efms" min="1">
+
+          <label for="num-children">How many are age 12 or younger?</label>
+          <input type="number" id="num-children" name="num-children" min="0">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Foreign Service Grade</legend>
+        <label for="fs-grade">Select your FS Grade:</label>
+        <select id="fs-grade" name="fs-grade" required>
+          <option value="">-- Select Grade --</option>
+          <option value="FS-01">FS-01</option>
+          <option value="FS-02">FS-02</option>
+          <option value="FS-03">FS-03</option>
+          <option value="FS-04">FS-04</option>
+        </select>
+
+        <label for="fs-step">Step within Grade:</label>
+        <input type="number" id="fs-step" name="fs-step" min="1" max="14" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>Allowance Eligibility</legend>
+        <label for="perm-housing">Will you move into permanent quarters before HHE arrives?</label>
+        <select id="perm-housing" name="perm-housing" required>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div id="perm-housing-date" style="display:none;">
+          <label for="move-in-date">Expected Move-in Date:</label>
+          <input type="date" id="move-in-date" name="move-in-date">
+        </div>
+
+        <label for="shipping-car">Are you shipping a car through the U.S. Government?</label>
+        <select id="shipping-car" name="shipping-car" required>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <label for="shipping-pet">Are you shipping a pet?</label>
+        <select id="shipping-pet" name="shipping-pet" required>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <label for="departure-country">What country are you departing from?</label>
+        <input type="text" id="departure-country" name="departure-country" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>Optional Reimbursement Triggers</legend>
+
+        <label for="tech-issues">Did local conditions damage your tech devices?</label>
+        <select id="tech-issues" name="tech-issues">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div id="tech-cost-section" style="display:none;">
+          <label for="tech-estimate">Estimated Tech Replacement Cost ($):</label>
+          <input type="number" id="tech-estimate" name="tech-estimate" step="0.01" min="0">
+        </div>
+
+        <label for="lithium-removal">Were lithium batteries removed due to shipping restrictions?</label>
+        <select id="lithium-removal" name="lithium-removal">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div id="battery-cost-section" style="display:none;">
+          <label for="battery-estimate">Estimated Lithium Battery Replacement Cost ($):</label>
+          <input type="number" id="battery-estimate" name="battery-estimate" step="0.01" min="0">
+        </div>
+
+        <label for="car-estimate">Estimated Car Rental Cost (if shipping POV through USG) ($):</label>
+        <input type="number" id="car-estimate" name="car-estimate" step="0.01" min="0">
+      </fieldset>
+
+      <button type="submit">Estimate My HSTA</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>© 2025 Roy Geiser. Released under the MIT License.</p>
+    <p>This tool is unofficial and provided for informational purposes only. It does not replace official USAID or Department of State guidance, nor does it guarantee final reimbursement values. FSOs should confirm calculations with their Executive Officer or HR representative.</p>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
