@@ -15,21 +15,6 @@
   </header>
 
   <div class="container">
-<div id="results-section" style="display:none;">
-  <h2>HSTA Scenario Comparison</h2>
-  <div class="result-row">
-    <div class="result-card" id="fixed-card">
-      <h3>Fixed HSTA Estimate</h3>
-      <div id="fixed-breakdown"></div>
-    </div>
-    <div class="result-card" id="actual-card">
-      <h3>Actual HSTA Estimate</h3>
-      <div id="actual-breakdown"></div>
-    </div>
-  </div>
-  <div id="recommendation" class="recommendation-banner"></div>
-</div>
-
     <form id="hsta-form">
       <fieldset>
         <legend>Travel Dates</legend>
@@ -59,17 +44,37 @@
 
       <fieldset>
         <legend>Foreign Service Grade</legend>
-        <label for="fs-grade">Select your FS Grade:</label>
         <select id="fs-grade" name="fs-grade" required>
           <option value="">-- Select Grade --</option>
-          <option value="FS-01">FS-01</option>
-          <option value="FS-02">FS-02</option>
-          <option value="FS-03">FS-03</option>
+          <option value="FS-06">FS-06</option>
+          <option value="FS-05">FS-05</option>
           <option value="FS-04">FS-04</option>
+          <option value="FS-03">FS-03</option>
+          <option value="FS-02">FS-02</option>
+          <option value="FS-01">FS-01</option>
+          <option value="SFS-Counselor">SFS – Counselor</option>
+          <option value="SFS-MinisterCounselor">SFS – Minister-Counselor</option>
+          <option value="SFS-CareerMinister">SFS – Career Minister</option>
         </select>
 
         <label for="fs-step">Step within Grade:</label>
-        <input type="number" id="fs-step" name="fs-step" min="1" max="14" required>
+        <select id="fs-step" name="fs-step" required>
+          <option value="">-- Select Step --</option>
+<option value="1">Step 1</option>
+<option value="2">Step 2</option>
+<option value="3">Step 3</option>
+<option value="4">Step 4</option>
+<option value="5">Step 5</option>
+<option value="6">Step 6</option>
+<option value="7">Step 7</option>
+<option value="8">Step 8</option>
+<option value="9">Step 9</option>
+<option value="10">Step 10</option>
+<option value="11">Step 11</option>
+<option value="12">Step 12</option>
+<option value="13">Step 13</option>
+<option value="14">Step 14</option>
+        </select>
       </fieldset>
 
       <fieldset>
@@ -98,7 +103,24 @@
         </select>
 
         <label for="departure-country">What country are you departing from?</label>
-        <input type="text" id="departure-country" name="departure-country" required>
+        <select id="departure-country" name="departure-country" required>
+          <option value="">-- Select Country --</option>
+          <option value="Afghanistan">Afghanistan</option>
+          <option value="Dominican Republic">Dominican Republic</option>
+          <option value="El Salvador">El Salvador</option>
+          <option value="Germany">Germany</option>
+          <option value="Honduras">Honduras</option>
+          <option value="India">India</option>
+          <option value="Iraq">Iraq</option>
+          <option value="Jordan">Jordan</option>
+          <option value="Kenya">Kenya</option>
+          <option value="Mexico">Mexico</option>
+          <option value="Nepal">Nepal</option>
+          <option value="Pakistan">Pakistan</option>
+          <option value="Peru">Peru</option>
+          <option value="South Africa">South Africa</option>
+          <option value="Ukraine">Ukraine</option>
+        </select>
       </fieldset>
 
       <fieldset>
@@ -126,12 +148,35 @@
           <input type="number" id="battery-estimate" name="battery-estimate" step="0.01" min="0">
         </div>
 
-        <label for="car-estimate">Estimated Car Rental Cost (if shipping POV through USG) ($):</label>
-        <input type="number" id="car-estimate" name="car-estimate" step="0.01" min="0">
+        <label for="renting-car">Do you expect to rent a car while awaiting POV?</label>
+        <select id="renting-car" name="renting-car">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div id="car-rental-cost-section" style="display:none;">
+          <label for="car-estimate">Estimated Car Rental Cost ($):</label>
+          <input type="number" id="car-estimate" name="car-estimate" step="0.01" min="0">
+        </div>
       </fieldset>
 
       <button type="submit">Estimate My HSTA</button>
     </form>
+
+    <div id="results-section" style="display:none;">
+      <h2>HSTA Scenario Comparison</h2>
+      <div class="result-row">
+        <div class="result-card" id="fixed-card">
+          <h3>Fixed HSTA Estimate</h3>
+          <div id="fixed-breakdown"></div>
+        </div>
+        <div class="result-card" id="actual-card">
+          <h3>Actual HSTA Estimate</h3>
+          <div id="actual-breakdown"></div>
+        </div>
+      </div>
+      <div id="recommendation" class="recommendation-banner"></div>
+    </div>
   </div>
 
   <footer>
