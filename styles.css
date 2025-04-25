@@ -172,3 +172,16 @@ footer {
   font-weight: bold;
   font-size: 1.05rem;
 }
+
+fieldset legend {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+body.dark .recommendation-banner {
+  color: #111;
+  background-color: #b6eac5;
+  border-left: 5px solid #2e7d32;
+}
