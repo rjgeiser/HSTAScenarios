@@ -185,3 +185,29 @@ body.dark .recommendation-banner {
   background-color: #b6eac5;
   border-left: 5px solid #2e7d32;
 }
+
+/* Center form initially */
+#hsta-form {
+  max-width: 600px;
+  margin: 0 auto;
+  flex: 1 1 100%;
+}
+
+/* Once results appear, show full two-column layout */
+.container.show-results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.container.show-results #hsta-form {
+  max-width: none;
+  margin: 0;
+  flex: 1 1 45%;
+}
+
+.container.show-results #results-section {
+  display: block;
+  flex: 1 1 45%;
+}
