@@ -85,6 +85,7 @@ input, select {
   box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 4px;
+  font-family: inherit; /* Force font match */
 }
 
 button {
