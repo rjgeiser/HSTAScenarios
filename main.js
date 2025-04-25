@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0)
     };
 
-    // === Estimation Logic ===
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
     const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
     const eligibleDays = Math.min(60, Math.max(0, daysBetween));
@@ -48,12 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const adultEFMs = formData.numEFMs - formData.numChildren;
     const childEFMs = formData.numChildren;
 
-    // Subsistence - Fixed
     const fixedSubsistence =
       CONUS_PER_DIEM * fixedDays *
       (0.75 + 0.25 * formData.numEFMs);
 
-    // Subsistence - Actual
     let actualSubsistence = 0;
     for (let i = 1; i <= eligibleDays; i++) {
       const isFirst30 = i <= 30;
@@ -66,33 +63,58 @@ document.addEventListener('DOMContentLoaded', () => {
       actualSubsistence += CONUS_PER_DIEM * efmChildRate * childEFMs;
     }
 
-    // Perm Qtrs M&IE
     const permMIE = formData.permHousing ? CONUS_PER_DIEM * Math.min(90, eligibleDays) : 0;
-
-    // Misc
     const standardMisc = formData.hasFamily ? 1500 : 750;
     const itemizedMiscCap = calculateItemizedMiscCap(formData.fsGrade, formData.hasFamily);
-
-    // Wardrobe
     const fromZone = WARDROBE_ZONES[formData.departureCountry] || 1;
     const wardrobe = getWardrobeAllowance(fromZone, 1, formData.hasFamily);
-
-    // Pet
     const petShipment = formData.shippingPet ? 4000 : 0;
-
-    // Actual-specific estimates
     const carRental = formData.shippingCar ? (formData.carRentalEstimate || 0) : 0;
     const tech = formData.techIssues ? (formData.techEstimate || 0) : 0;
     const battery = formData.lithiumRemoval ? (formData.batteryEstimate || 0) : 0;
 
-    // Totals
     const fixedTotal = fixedSubsistence + standardMisc + wardrobe + petShipment;
     const actualTotal = actualSubsistence + permMIE + itemizedMiscCap + wardrobe + petShipment + carRental + tech + battery;
 
-    console.log("Fixed Total:", fixedTotal.toFixed(2));
-    console.log("Actual Total:", actualTotal.toFixed(2));
+    // Format breakdowns
+    const breakdown = (label, value, ref = '') => `<p><strong>${label}:</strong> $${value.toFixed(2)} ${ref ? `<br><small>(${ref})</small>` : ''}</p>`;
 
-    // Final Output (To be connected to display logic)
-    alert(`Fixed: $${fixedTotal.toFixed(2)}\nActual: $${actualTotal.toFixed(2)}\n(See console for breakdown)`);
+    // Populate report cards
+    const fixedDiv = document.getElementById('fixed-breakdown');
+    const actualDiv = document.getElementById('actual-breakdown');
+    fixedDiv.innerHTML = '';
+    actualDiv.innerHTML = '';
+
+    fixedDiv.innerHTML += breakdown("Subsistence (30 days)", fixedSubsistence, "DSSR 251.2(a)");
+    fixedDiv.innerHTML += breakdown("Miscellaneous (Standard)", standardMisc, "DSSR 252.1(a)");
+    fixedDiv.innerHTML += breakdown("Wardrobe Allowance", wardrobe, "DSSR 242.1");
+    fixedDiv.innerHTML += breakdown("Pet Shipment", petShipment, "14 FAM 615.3");
+    fixedDiv.innerHTML += `<hr><p><strong>Total:</strong> $${fixedTotal.toFixed(2)}</p>`;
+
+    actualDiv.innerHTML += breakdown("Subsistence (" + eligibleDays + " days)", actualSubsistence, "DSSR 251.2(a)");
+    actualDiv.innerHTML += breakdown("Perm. Qtrs M&IE", permMIE, "DSSR 251.2(b)");
+    actualDiv.innerHTML += breakdown("Miscellaneous (Itemized Cap)", itemizedMiscCap, "DSSR 252.1(b)");
+    actualDiv.innerHTML += breakdown("Wardrobe Allowance", wardrobe, "DSSR 242.1");
+    actualDiv.innerHTML += breakdown("Pet Shipment", petShipment, "14 FAM 615.3");
+    actualDiv.innerHTML += breakdown("Car Rental", carRental, "DSSR 252.1(b)(3)(i)");
+    actualDiv.innerHTML += breakdown("Tech Replacement", tech, "DSSR 252.1(b)(3)(ii)");
+    actualDiv.innerHTML += breakdown("Lithium Battery", battery, "DSSR 252.1(b)(3)(iii)");
+    actualDiv.innerHTML += `<hr><p><strong>Total:</strong> $${actualTotal.toFixed(2)}</p>`;
+
+    // Show recommendation
+    const recommendation = document.getElementById('recommendation');
+    let message = '';
+    if (actualTotal > fixedTotal && eligibleDays >= 30) {
+      message = `We recommend pursuing the <strong>Actual HSTA option</strong>, which may yield approximately $${(actualTotal - fixedTotal).toFixed(2)} more than the Fixed Rate.`;
+    } else {
+      message = `We recommend the <strong>Fixed HSTA option</strong>, which may provide a higher or comparable benefit with less documentation.`;
+    }
+    if (eligibleDays < 30) {
+      message += `<br><em>Note: Your actual HSTA is limited to ${eligibleDays} day(s) due to your separation timeline.</em>`;
+    }
+    recommendation.innerHTML = message;
+
+    // Show results section
+    document.getElementById('results-section').style.display = 'block';
   });
 });
