@@ -52,6 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0)
     };
 
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+      });
+    }
+
     // Calculate eligible days (departure to separation date)
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
     const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
