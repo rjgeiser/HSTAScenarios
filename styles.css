@@ -36,6 +36,12 @@ header {
   border-radius: 4px;
 }
 
+body.dark .hsta-summary {
+  background-color: #1f3b58; /* darker blue background for dark mode */
+  color: #e0e0e0; /* lighter text */
+  border-left: 4px solid #4dabf7; /* lighter blue border */
+}
+
 h1, h2, legend {
   color: var(--text);
 }
