@@ -8,6 +8,24 @@ import {
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded and parsed');
+
+  // Handle Reset Form Button
+const resetButton = document.getElementById('reset-form');
+if (resetButton) {
+  resetButton.addEventListener('click', () => {
+    document.getElementById('results-section').style.display = 'none';
+    document.querySelector('.container').classList.remove('show-results');
+    console.log('Form and results reset.');
+  });
+}
+
+// Handle Print Results Button
+const printButton = document.getElementById('print-results');
+if (printButton) {
+  printButton.addEventListener('click', () => {
+    window.print();
+  });
+}
   
     // Dark Mode Toggle
     const themeToggle = document.getElementById('theme-toggle');
