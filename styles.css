@@ -80,6 +80,25 @@ form#hsta-form {
   margin: 0;
 }
 
+.scenario-summary {
+  background-color: #eef5fb;
+  border-left: 4px solid #005ea2;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.scenario-summary h3 {
+  margin-top: 0;
+}
+
+
+/* Dark mode override for scenario summary */
+body.dark .scenario-summary {
+  background-color: #1f3b58;
+  color: #e0e0e0;
+  border-left: 4px solid #4dabf7;
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -141,17 +160,6 @@ button {
 
 button:hover {
   background-color: var(--accent-hover);
-}
-
-.scenario-summary {
-  background-color: #eef5fb;
-  border-left: 4px solid #005ea2;
-  padding: 1rem;
-  border-radius: 4px;
-}
-
-.scenario-summary h3 {
-  margin-top: 0;
 }
 
 #results-section {
