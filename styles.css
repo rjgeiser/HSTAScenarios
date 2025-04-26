@@ -28,6 +28,14 @@ header {
   margin-bottom: 2rem;
 }
 
+.hsta-summary {
+  background-color: #eef5fb;
+  border-left: 4px solid #005ea2;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
 h1, h2, legend {
   color: var(--text);
 }
