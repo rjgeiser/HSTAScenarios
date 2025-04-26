@@ -63,6 +63,22 @@ legend {
   align-items: flex-start;
 }
 
+.form-errors {
+  background-color: #ffe5e5;
+  border: 1px solid #ff5c5c;
+  color: #990000;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+body.dark .form-errors {
+  background-color: #5c1a1a;
+  border: 1px solid #ff9999;
+  color: #ffdcdc;
+}
+
 form#hsta-form {
   max-width: 600px;
   margin: 0 auto;
