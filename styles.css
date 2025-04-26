@@ -110,6 +110,16 @@ button:hover {
   background-color: var(--accent-hover);
 }
 
+.scenario-summary {
+  background-color: #eef5fb;
+  border-left: 4px solid #005ea2;
+  padding: 1rem;
+  border-radius: 4px;
+}
+.scenario-summary h3 {
+  margin-top: 0;
+}
+
 #results-section {
   flex: 1 1 45%;
   background: var(--card);
