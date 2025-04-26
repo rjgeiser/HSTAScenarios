@@ -16,7 +16,14 @@ if (resetButton) {
   resetButton.addEventListener('click', () => {
     document.getElementById('results-section').style.display = 'none';
     document.querySelector('.container').classList.remove('show-results');
-    console.log('Form and results reset.');
+
+    const errorDiv = document.getElementById('form-errors');
+    if (errorDiv) {
+      errorDiv.innerHTML = '';
+      errorDiv.style.display = 'none';
+    }
+
+    console.log('Form, results, and validation errors reset.');
   });
 }
 
