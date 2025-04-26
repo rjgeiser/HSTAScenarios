@@ -177,30 +177,30 @@ scenarioSummary.innerHTML = `
 
     // Results Display
     document.getElementById('fixed-breakdown').innerHTML = `
-      <p><strong>Subsistence (30 days):</strong> $${fixedSubsistence.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 251.2(a))</small></p>
-      <p><strong>Miscellaneous (Standard):</strong> $${standardMisc.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 252.1(a))</small></p>
-      <p><strong>Wardrobe Allowance:</strong> $${wardrobeAllowance.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 242.1)</small></p>
-      <p><strong>Pet Shipment:</strong> $${petShipment.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(14 FAM 615.3)</small></p>
+      <p><strong>Subsistence (30 days):</strong> $${fixedSubsistence.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 251.2(a))</small></p>
+      <p><strong>Miscellaneous (Standard):</strong> $${standardMisc.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(a))</small></p>
+      <p><strong>Wardrobe Allowance:</strong> $${wardrobeAllowance.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 242.1)</small></p>
+      <p><strong>Pet Shipment:</strong> $${petShipment.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(14 FAM 615.3)</small></p>
       <hr>
-      <p><strong>Total Fixed Estimate:</strong> $${fixedTotal.toLocaleString('en-US', { minimumFractionDigits: 0 )}</p>
+      <p><strong>Total Fixed Estimate:</strong> $${fixedTotal.toLocaleString('en-US', { minimumFractionDigits: 0 })}</p>
     `;
 
     document.getElementById('actual-breakdown').innerHTML = `
-      <p><strong>Subsistence (${eligibleDays} days):</strong> $${actualSubsistence.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 251.2(a))</small></p>
-      <p><strong>Perm Qtrs M&IE:</strong> $${permMIE.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 251.2(b))</small></p>
-      <p><strong>Miscellaneous (Itemized):</strong> $${miscCap.toLocaleString('en-US', { minimumFractionDigits: 0 )} ${miscCapExplanation}<br><small>(DSSR 252.1(b))</small></p>
-      <p><strong>Wardrobe Allowance:</strong> $${wardrobeAllowance.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 242.1)</small></p>
-      <p><strong>Pet Shipment:</strong> $${petShipment.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(14 FAM 615.3)</small></p>
-      <p><strong>Car Rental:</strong> $${carRental.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 252.1(b)(3)(i))</small></p>
-      <p><strong>Tech Replacement:</strong> $${tech.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 252.1(b)(3)(ii))</small></p>
-      <p><strong>Lithium Battery:</strong> $${battery.toLocaleString('en-US', { minimumFractionDigits: 0 )}<br><small>(DSSR 252.1(b)(3)(iii))</small></p>
+      <p><strong>Subsistence (${eligibleDays} days):</strong> $${actualSubsistence.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 251.2(a))</small></p>
+      <p><strong>Perm Qtrs M&IE:</strong> $${permMIE.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 251.2(b))</small></p>
+      <p><strong>Miscellaneous (Itemized):</strong> $${miscCap.toLocaleString('en-US', { minimumFractionDigits: 0 })} ${miscCapExplanation}<br><small>(DSSR 252.1(b))</small></p>
+      <p><strong>Wardrobe Allowance:</strong> $${wardrobeAllowance.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 242.1)</small></p>
+      <p><strong>Pet Shipment:</strong> $${petShipment.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(14 FAM 615.3)</small></p>
+      <p><strong>Car Rental:</strong> $${carRental.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(b)(3)(i))</small></p>
+      <p><strong>Tech Replacement:</strong> $${tech.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(b)(3)(ii))</small></p>
+      <p><strong>Lithium Battery:</strong> $${battery.toLocaleString('en-US', { minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(b)(3)(iii))</small></p>
       <hr>
-      <p><strong>Total Actual Estimate:</strong> $${actualTotal.toLocaleString('en-US', { minimumFractionDigits: 0 )}</p>
+      <p><strong>Total Actual Estimate:</strong> $${actualTotal.toLocaleString('en-US', { minimumFractionDigits: 0 })}</p>
     `;
 
     const recommendation = document.getElementById('recommendation');
     recommendation.innerHTML = (actualTotal > fixedTotal)
-      ? `We recommend pursuing the <strong>Actual HSTA option</strong> for a potentially higher allowance (~$${(actualTotal - fixedTotal).toLocaleString('en-US', { minimumFractionDigits: 0 )} more).`
+      ? `We recommend pursuing the <strong>Actual HSTA option</strong> for a potentially higher allowance (~$${(actualTotal - fixedTotal).toLocaleString('en-US', { minimumFractionDigits: 0 })} more).`
       : `We recommend considering the <strong>Fixed HSTA option</strong> for simplicity and comparable benefit.`;
 
     document.getElementById('results-section').style.display = 'block';
