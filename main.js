@@ -102,14 +102,14 @@ scenarioSummary.innerHTML = `
       </ul>
     </div>
     <div>
-      <h4>Allowance Information</h4>
+  <h4>Allowance Information</h4>
       <ul>
         <li><strong>Permanent Housing Planned:</strong> ${formData.permHousing ? 'Yes' : 'No'}</li>
         <li><strong>Shipping POV:</strong> ${formData.shippingCar ? 'Yes' : 'No'}</li>
         <li><strong>Shipping Pet:</strong> ${formData.shippingPet ? 'Yes' : 'No'}</li>
         <li><strong>Tech Replacement Claimed:</strong> ${formData.techIssues ? 'Yes' : 'No'}</li>
         <li><strong>Lithium Battery Replacement Claimed:</strong> ${formData.lithiumRemoval ? 'Yes' : 'No'}</li>
-        <li><strong>Car Rental Claimed:</strong> ${formData.rentingCar ? 'Yes' : 'No'} ${formData.rentingCar && formData.carRentalEstimate ? `($${formData.carRentalEstimate.toLocaleString('en-US', { minimumFractionDigits: 0 )})` : ''}</li>
+        <li><strong>Car Rental Claimed:</strong> ${formData.rentingCar ? 'Yes' : 'No'}${formData.rentingCar && formData.carRentalEstimate ? ` ($${formData.carRentalEstimate.toLocaleString('en-US', { minimumFractionDigits: 0 })})` : ''}</li>
       </ul>
     </div>
   </div>
