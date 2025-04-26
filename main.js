@@ -79,24 +79,40 @@ if (printButton) {
     };
 
     // Build Scenario Summary Output
-  const scenarioSummary = document.getElementById('scenario-summary');
-  scenarioSummary.innerHTML = ''; // Clear previous
-  scenarioSummary.innerHTML = `
-    <h3>Scenario Summary</h3>
-    <ul>
-      <li><strong>Departure Date:</strong> ${formData.departureDate.toLocaleDateString()}</li>
-      <li><strong>Separation Date:</strong> ${formData.separationDate.toLocaleDateString()}</li>
-      <li><strong>Number of EFMs:</strong> ${formData.numEFMs} (${formData.numChildren} under age 12)</li>
-      <li><strong>FS Grade and Step:</strong> ${formData.fsGrade} Step ${formData.fsStep}</li>
-      <li><strong>Permanent Housing Planned:</strong> ${formData.permHousing ? 'Yes' : 'No'}</li>
-      <li><strong>Shipping POV:</strong> ${formData.shippingCar ? 'Yes' : 'No'}</li>
-      <li><strong>Shipping Pet:</strong> ${formData.shippingPet ? 'Yes' : 'No'}</li>
-      <li><strong>Tech Replacement Claimed:</strong> ${formData.techIssues ? 'Yes' : 'No'}</li>
-      <li><strong>Lithium Battery Replacement Claimed:</strong> ${formData.lithiumRemoval ? 'Yes' : 'No'}</li>
-      <li><strong>Car Rental Claimed:</strong> ${formData.rentingCar ? 'Yes' : 'No'} ${formData.rentingCar && formData.carRentalEstimate ? `($${formData.carRentalEstimate.toFixed(2)})` : ''}</li>
-      <li><strong>Departure Country:</strong> ${formData.departureCountry}</li>
-    </ul>
-  `;
+const scenarioSummary = document.getElementById('scenario-summary');
+scenarioSummary.innerHTML = ''; // Clear previous
+
+scenarioSummary.innerHTML = `
+  <h3>Scenario Summary</h3>
+  <div class="summary-grid">
+    <div>
+      <h4>Travel Information</h4>
+      <ul>
+        <li><strong>Departure Date:</strong> ${formData.departureDate.toLocaleDateString()}</li>
+        <li><strong>Separation Date:</strong> ${formData.separationDate.toLocaleDateString()}</li>
+        <li><strong>Departure Country:</strong> ${formData.departureCountry}</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Family Information</h4>
+      <ul>
+        <li><strong>Number of EFMs:</strong> ${formData.numEFMs} (${formData.numChildren} under age 12)</li>
+        <li><strong>FS Grade and Step:</strong> ${formData.fsGrade} Step ${formData.fsStep}</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Allowance Information</h4>
+      <ul>
+        <li><strong>Permanent Housing Planned:</strong> ${formData.permHousing ? 'Yes' : 'No'}</li>
+        <li><strong>Shipping POV:</strong> ${formData.shippingCar ? 'Yes' : 'No'}</li>
+        <li><strong>Shipping Pet:</strong> ${formData.shippingPet ? 'Yes' : 'No'}</li>
+        <li><strong>Tech Replacement Claimed:</strong> ${formData.techIssues ? 'Yes' : 'No'}</li>
+        <li><strong>Lithium Battery Replacement Claimed:</strong> ${formData.lithiumRemoval ? 'Yes' : 'No'}</li>
+        <li><strong>Car Rental Claimed:</strong> ${formData.rentingCar ? 'Yes' : 'No'} ${formData.rentingCar && formData.carRentalEstimate ? `($${formData.carRentalEstimate.toFixed(2)})` : ''}</li>
+      </ul>
+    </div>
+  </div>
+`;
 
     // Calculate eligible days (departure to separation date)
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
