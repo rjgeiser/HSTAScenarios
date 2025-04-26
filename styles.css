@@ -147,6 +147,7 @@ button:hover {
   padding: 1rem;
   border-radius: 4px;
 }
+
 .scenario-summary h3 {
   margin-top: 0;
 }
@@ -206,19 +207,35 @@ footer {
   body {
     background: #fff;
     color: #000;
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  header, form#hsta-form, #theme-toggle, #reset-form, #print-results, footer {
+    display: none;
   }
 
   .container {
     display: block;
-  }
-
-  form#hsta-form, button, header {
-    display: none;
+    margin: 0;
+    padding: 0;
   }
 
   #results-section {
-    border: none;
-    box-shadow: none;
+    margin: 0;
     padding: 0;
+    box-shadow: none;
+    border: none;
+  }
+
+  .scenario-summary, .result-card, .recommendation-banner {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: #fff;
+    color: #000;
+  }
+
+  .result-row {
+    display: block;
   }
 }
