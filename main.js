@@ -79,6 +79,28 @@ if (printButton) {
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0)
     };
 
+    // Validation checks
+  const errors = [];
+  
+  // Date validations
+  if (formData.separationDate <= formData.departureDate) {
+    errors.push("Separation Date must be after Departure Date.");
+  }
+  if (formData.moveInDate && formData.moveInDate <= formData.departureDate) {
+    errors.push("Move-in Date must be after Departure Date.");
+  }
+  
+  // Family/children validations
+  if (formData.hasFamily && formData.numChildren > formData.numEFMs) {
+    errors.push("Number of children cannot exceed total number of accompanying family members.");
+  }
+  
+  // Handle errors if any
+  if (errors.length > 0) {
+    alert(errors.join("\\n"));
+    return; // Stop form processing if invalid
+  }
+
     // Build Scenario Summary Output
 const scenarioSummary = document.getElementById('scenario-summary');
 scenarioSummary.innerHTML = ''; // Clear previous
