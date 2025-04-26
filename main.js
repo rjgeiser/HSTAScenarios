@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Build Scenario Summary Output
   const scenarioSummary = document.getElementById('scenario-summary');
+  scenarioSummary.innerHTML = ''; // Clear previous
   scenarioSummary.innerHTML = `
     <h3>Scenario Summary</h3>
     <ul>
