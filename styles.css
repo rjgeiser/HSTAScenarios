@@ -32,14 +32,16 @@ header {
   background-color: #eef5fb;
   border-left: 4px solid #005ea2;
   padding: 1rem;
-  margin-bottom: 1.5rem;
   border-radius: 4px;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark .hsta-summary {
-  background-color: #1f3b58; /* darker blue background for dark mode */
-  color: #e0e0e0; /* lighter text */
-  border-left: 4px solid #4dabf7; /* lighter blue border */
+  background-color: #1f3b58;
+  color: #e0e0e0;
+  border-left: 4px solid #4dabf7;
 }
 
 h1, h2, legend {
