@@ -90,6 +90,8 @@ form#hsta-form {
   border-radius: 4px;
   color: var(--text);
   transition: background-color 0.5s ease, color 0.5s ease;
+  border: 1px solid var(--border); /* <--- NEW for soft border */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* <--- Soft shadow like result cards */
 }
 
 .summary-grid h4 {
@@ -201,6 +203,20 @@ footer {
   border-top: 1px solid var(--border);
   padding-top: 1rem;
   text-align: center;
+}
+
+.print-note {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Hide print note during actual printing */
+@media print {
+  .print-note {
+    display: none;
+  }
 }
 
 @media print {
