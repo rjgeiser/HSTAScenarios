@@ -8,6 +8,14 @@ import {
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded and parsed');
+  
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+      });
+    }
 
   // Set up dynamic show/hide for conditional fields
   const setupToggle = (id, targetId) => {
@@ -51,14 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
       carRentalEstimate: parseFloat(document.getElementById('car-estimate')?.value || 0),
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0)
     };
-
-    // Dark Mode Toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-      });
-    }
 
     // Calculate eligible days (departure to separation date)
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
