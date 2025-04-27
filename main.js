@@ -10,31 +10,28 @@ import {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded and parsed');
 
-  // Handle Reset Form Button
-const resetButton = document.getElementById('reset-form');
-if (resetButton) {
-  resetButton.addEventListener('click', () => {
+  // Handle Modify, Reset, and Print Form Button
+const modifyInputs = document.getElementById('modify-inputs');
+if (modifyInputs) {
+  modifyInputs.addEventListener('click', () => {
     document.getElementById('results-section').style.display = 'none';
-    document.querySelector('.container').classList.remove('show-results');
-
-    const errorDiv = document.getElementById('form-errors');
-    if (errorDiv) {
-      errorDiv.innerHTML = '';
-      errorDiv.style.display = 'none';
-    }
-
-    console.log('Form, results, and validation errors reset.');
+    document.getElementById('hsta-form').style.display = 'block';
   });
 }
 
-// Handle Print Results Button
+const resetButton = document.getElementById('reset-form');
+if (resetButton) {
+  resetButton.addEventListener('click', () => {
+    window.location.reload(); // Full page reload to completely clear
+  });
+}
+
 const printButton = document.getElementById('print-results');
 if (printButton) {
   printButton.addEventListener('click', () => {
     window.print();
   });
-}
-  
+}  
     // Dark Mode Toggle
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
@@ -148,95 +145,82 @@ scenarioSummary.innerHTML = `
   </div>
 `;
 
-    // Calculate eligible days (departure to separation date)
-    const MS_PER_DAY = 1000 * 60 * 60 * 24;
-    const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
-    const eligibleDays = Math.min(60, Math.max(0, daysBetween));
-    const fixedDays = Math.min(eligibleDays, 30);
+// Calculate eligible days (departure to separation date)
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
+const eligibleDays = Math.min(60, Math.max(0, daysBetween));
 
-    // Subsistence - Fixed
-    const fixedSubsistence = 168 * fixedDays * (0.75 + 0.25 * formData.numEFMs);
+// Subsistence - Actual
+let actualSubsistence = 0;
+const adultEFMs = formData.numEFMs - formData.numChildren;
+const childEFMs = formData.numChildren;
+for (let i = 1; i <= eligibleDays; i++) {
+  const isFirst30 = i <= 30;
+  const empRate = isFirst30 ? 1.0 : 0.75;
+  const efmAdultRate = isFirst30 ? 0.75 : 0.5;
+  const efmChildRate = isFirst30 ? 0.5 : 0.4;
 
-    // Subsistence - Actual
-    let actualSubsistence = 0;
-    const adultEFMs = formData.numEFMs - formData.numChildren;
-    const childEFMs = formData.numChildren;
-    for (let i = 1; i <= eligibleDays; i++) {
-      const isFirst30 = i <= 30;
-      const empRate = isFirst30 ? 1.0 : 0.75;
-      const efmAdultRate = isFirst30 ? 0.75 : 0.5;
-      const efmChildRate = isFirst30 ? 0.5 : 0.4;
+  actualSubsistence += 168 * empRate;
+  actualSubsistence += 168 * efmAdultRate * adultEFMs;
+  actualSubsistence += 168 * efmChildRate * childEFMs;
+}
 
-      actualSubsistence += 168 * empRate;
-      actualSubsistence += 168 * efmAdultRate * adultEFMs;
-      actualSubsistence += 168 * efmChildRate * childEFMs;
-    }
+// Wardrobe Allowance
+const wardrobeAllowance = formData.hasFamily ? 1400 : 700;
 
-    const permMIE = formData.permHousing ? 168 * Math.min(90, eligibleDays) : 0;
+// Pet Shipment capped at $4,000
+const petShipment = formData.shippingPet ? 4000 : 0;
 
-    // Wardrobe Allowance (simplified for now)
-    const wardrobeAllowance = formData.hasFamily ? 1400 : 700;
+// Salary-based Miscellaneous cap calculation
+let salaryHourly = 0;
+if (FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep]) {
+  salaryHourly = FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087;
+}
+const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
+const gs13WeeklyCap = GS13_STEP10_HOURLY * (formData.hasFamily ? 80 : 40);
+const finalCap = Math.min(weeklySalaryCap, gs13WeeklyCap);
 
-    // Pet Shipment
-    const petShipment = formData.shippingPet ? 4000 : 0;
+// USAID vs State Miscellaneous difference
+const extraClaims = (formData.techEstimate || 0) + (formData.batteryEstimate || 0) + (formData.carRentalEstimate || 0);
 
-    // Car Rental, Tech, Battery
-    const carRental = formData.rentingCar ? (formData.carRentalEstimate || 0) : 0;
-    const tech = formData.techIssues ? (formData.techEstimate || 0) : 0;
-    const battery = formData.lithiumRemoval ? (formData.batteryEstimate || 0) : 0;
+// USAID: includes tech, car rental, battery
+const usaidMiscTotal = Math.min(finalCap, extraClaims);
 
-    // Miscellaneous - Itemized Cap logic
-    let miscCap = 0;
-    let miscCapExplanation = '';
+// State: does NOT include extras
+const stateMiscTotal = 0; // State version strictly sticks to cap without user extras
 
-    if (formData.fsGrade.startsWith('SFS')) {
-      miscCap = GS13_STEP10_WEEKLY;
-      miscCapExplanation = "(Capped by GS-13 Step 10 rate)";
-    } else {
-      const fsSalary = FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep] || 0;
-      const hourlyRate = fsSalary / 2087;
-      const weeklyPay = hourlyRate * 40;
-      miscCap = Math.min(weeklyPay, GS13_STEP10_WEEKLY);
-      miscCapExplanation = (weeklyPay > GS13_STEP10_WEEKLY)
-        ? "(Capped by GS-13 Step 10 rate)"
-        : "(Capped by your FS salary)";
-    }
+// FINAL TOTALS
+const usaidTotal = actualSubsistence + usaidMiscTotal + wardrobeAllowance + petShipment;
+const stateTotal = actualSubsistence + stateMiscTotal + wardrobeAllowance + petShipment;
 
-    const standardMisc = formData.hasFamily ? 1500 : 750;
+// Output Results
+document.getElementById('usaid-breakdown').innerHTML = `
+  <p><strong>Subsistence Allowance:</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <p><strong>Miscellaneous (Itemized with Tech/Car/Battery):</strong> ${usaidMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <p><strong>Wardrobe Allowance:</strong> ${wardrobeAllowance.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <p><strong>Pet Shipment:</strong> ${petShipment.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <hr>
+  <p><strong>Total USAID Estimate:</strong> ${usaidTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+`;
 
-    // Totals
-    const fixedTotal = fixedSubsistence + standardMisc + wardrobeAllowance + petShipment;
-    const actualTotal = actualSubsistence + permMIE + miscCap + wardrobeAllowance + petShipment + carRental + tech + battery;
+document.getElementById('state-breakdown').innerHTML = `
+  <p><strong>Subsistence Allowance:</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <p><strong>Miscellaneous (Strict DSSR - No Extras):</strong> ${stateMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <p><strong>Wardrobe Allowance:</strong> ${wardrobeAllowance.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <p><strong>Pet Shipment:</strong> ${petShipment.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+  <hr>
+  <p><strong>Total State Estimate:</strong> ${stateTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+`;
 
-    // Results Display
-    document.getElementById('fixed-breakdown').innerHTML = `
-      <p><strong>Subsistence (30 days):</strong> ${fixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 251.2(a))</small></p>
-      <p><strong>Miscellaneous (Standard):</strong> ${standardMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(a))</small></p>
-      <p><strong>Wardrobe Allowance:</strong> ${wardrobeAllowance.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 242.1)</small></p>
-      <p><strong>Pet Shipment:</strong> ${petShipment.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(14 FAM 615.3)</small></p>
-      <hr>
-      <p><strong>Total Fixed Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-    `;
+document.getElementById('recommendation').innerHTML = `
+  ${usaidTotal > stateTotal
+    ? "Under USAID RIF guidance, including technology and rental car expenses could result in a higher allowance."
+    : "State Department calculations may offer a simpler but lower allowance without optional claims."
+  }
+`;
 
-    document.getElementById('actual-breakdown').innerHTML = `
-      <p><strong>Subsistence (${eligibleDays} days):</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 251.2(a))</small></p>
-      <p><strong>Perm Qtrs M&IE:</strong> ${permMIE.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 251.2(b))</small></p>
-      <p><strong>Miscellaneous (Itemized):</strong> ${miscCap.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} ${miscCapExplanation}<br><small>(DSSR 252.1(b))</small></p>
-      <p><strong>Wardrobe Allowance:</strong> ${wardrobeAllowance.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 242.1)</small></p>
-      <p><strong>Pet Shipment:</strong> ${petShipment.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(14 FAM 615.3)</small></p>
-      <p><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(b)(3)(i))</small></p>
-      <p><strong>Tech Replacement:</strong> ${tech.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(b)(3)(ii))</small></p>
-      <p><strong>Lithium Battery:</strong> ${battery.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}<br><small>(DSSR 252.1(b)(3)(iii))</small></p>
-      <hr>
-      <p><strong>Total Actual Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-    `;
-
-    const recommendation = document.getElementById('recommendation');
-    recommendation.innerHTML = (actualTotal > fixedTotal)
-      ? `We recommend pursuing the <strong>Actual HSTA option</strong> for a potentially higher allowance (~${(actualTotal - fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} more).`
-      : `We recommend considering the <strong>Fixed HSTA option</strong> for simplicity and comparable benefit.`;
-
-    document.getElementById('results-section').style.display = 'block';
-    document.querySelector('.container').classList.add('show-results');
+// Hide form and show results
+document.getElementById('hsta-form').style.display = 'none';
+document.getElementById('results-section').style.display = 'block';
   });
 });
