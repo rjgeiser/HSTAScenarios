@@ -350,24 +350,33 @@
       <button type="reset" id="reset-form">Reset Form</button>
     </form>
 
-    <div id="results-section" style="display:none;">
-      <h2>HSTA Scenario Comparison</h2>
-      <div id="scenario-summary" class="scenario-summary" style="margin-bottom: 1.5rem;"></div>
-      <div class="result-row">
-        <div class="result-card" id="fixed-card">
-          <h3>Fixed HSTA Estimate</h3>
-          <div id="fixed-breakdown"></div>
-        </div>
-        <div class="result-card" id="actual-card">
-          <h3>Actual HSTA Estimate</h3>
-          <div id="actual-breakdown"></div>
-        </div>
-      </div>
-      <div id="recommendation" class="recommendation-banner"></div>
-      <p class="print-note">Tip: Use the "Print Results" button to save a clean copy of your estimate as a PDF for your records.</p>
-      <button id="print-results">Print Results</button>
+<div id="results-section" style="display:none;">
+  <h2>HSTA Scenario Comparison</h2>
+  <p class="dual-note">
+    The estimates below show allowance calculations based on both <strong>USAID RIF guidance</strong> (permissive inclusion of certain expenses) and <strong>State Department DSSR guidance</strong> (more restrictive interpretation). Please select the column applicable to your situation.
+  </p>
+
+  <div class="dual-result-row">
+    <div class="dual-result-card" id="usaid-card">
+      <h3>USAID Estimate</h3>
+      <div id="usaid-breakdown"></div>
+    </div>
+
+    <div class="dual-result-card" id="state-card">
+      <h3>State Department Estimate</h3>
+      <div id="state-breakdown"></div>
     </div>
   </div>
+
+  <div id="recommendation" class="recommendation-banner"></div>
+
+  <div class="post-results-buttons">
+    <p class="print-note">Tip: Use the "Print Results" button to save a clean copy of your estimate as a PDF for your records.</p>
+    <button id="print-results">Print Results</button>
+    <button id="modify-inputs">Modify Inputs</button>
+    <button id="reset-form">Reset Form</button>
+  </div>
+</div>
 
   <footer>
     <p>© 2025 Roy Geiser. Released under the MIT License.</p>
