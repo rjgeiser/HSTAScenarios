@@ -225,7 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.toggle('dark');
     });
   }
-
+  
+  // Dynamic Field Toggles
   const setupToggle = (id, targetId) => {
     const input = document.getElementById(id);
     const target = document.getElementById(targetId);
@@ -235,17 +236,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   };
-
   setupToggle('has-family', 'family-details');
   setupToggle('perm-housing', 'perm-housing-date');
   setupToggle('tech-issues', 'tech-cost-section');
   setupToggle('lithium-removal', 'battery-cost-section');
   setupToggle('renting-car', 'car-rental-cost-section');
 
+  // Form Submit Handling
   const form = document.getElementById('hsta-form');
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
+    // Parse Form Data
     const formData = {
       departureDate: new Date(document.getElementById('departure-date').value),
       separationDate: new Date(document.getElementById('separation-date').value),
@@ -267,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0)
     };
 
+    // === Validation
     const errorDiv = document.getElementById('form-errors');
     errorDiv.innerHTML = '';
     errorDiv.style.display = 'none';
@@ -287,10 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-        // Constants
+    // ==== Calculations
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
     const CONUS_RATE = 168;
-
     const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
     const eligibleDays = Math.min(60, Math.max(0, daysBetween));
     const fixedDays = Math.min(30, eligibleDays);
@@ -313,13 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
       actualSubsistence += CONUS_RATE * (isFirst30 ? 0.5 : 0.4) * childEFMs;
     }
 
+    // Miscellaneous (Actual)
     const salaryHourly = FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep] 
       ? FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087
       : 0;
     const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
     const gs13WeeklyCap = GS13_STEP10_HOURLY * (formData.hasFamily ? 80 : 40);
     const finalMiscCap = Math.min(weeklySalaryCap, gs13WeeklyCap);
-
     const extraClaims = (formData.techEstimate || 0) + (formData.batteryEstimate || 0) + (formData.carRentalEstimate || 0);
     const actualMisc = Math.min(finalMiscCap, extraClaims);
 
@@ -351,47 +353,71 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    // === Fixed vs Actual HSTA Outputs
+    // === Results: Fixed and Actual Breakdown + Citations
     document.getElementById('fixed-breakdown').innerHTML = `
-      <p><strong>Subsistence (30 days):</strong> ${fixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-      <p><strong>Miscellaneous:</strong> ${fixedMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-      <p><strong>Wardrobe Allowance:</strong> ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-      <p><strong>Pet Shipment:</strong> ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+      <p><strong>Subsistence (30 days max):</strong> ${fixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 251.2(a))</small></p>
+      <p><strong>Miscellaneous Expense:</strong> ${fixedMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 252.1(a))</small></p>
+      <p><strong>Wardrobe Allowance:</strong> ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 242.1)</small></p>
+      <p><strong>Pet Shipment:</strong> ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(14 FAM 615.3)</small></p>
       <hr><p><strong>Total Fixed Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
     `;
 
     document.getElementById('actual-breakdown').innerHTML = `
-      <p><strong>Subsistence (${eligibleDays} days):</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-      <p><strong>Miscellaneous (Itemized):</strong> ${actualMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-      <p><strong>Wardrobe Allowance:</strong> ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
-      <p><strong>Pet Shipment:</strong> ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+      <p><strong>Subsistence (up to 60 days):</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 251.2(a))</small></p>
+      <p><strong>Miscellaneous Expense (Itemized):</strong> ${actualMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 252.1(b))</small></p>
+      <p><strong>Wardrobe Allowance:</strong> ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 242.1)</small></p>
+      <p><strong>Pet Shipment:</strong> ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(14 FAM 615.3)</small></p>
       <hr><p><strong>Total Actual Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
     `;
 
-    // === Fixed vs Actual Recommendation
+    // === Recommendation
     const fixedActualRecommendation = document.getElementById('fixed-actual-recommendation');
     fixedActualRecommendation.innerHTML = actualTotal > fixedTotal
       ? `<p>We recommend pursuing the <strong>Actual HSTA option</strong> based on your inputs (~${(actualTotal - fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} more).</p>`
       : `<p>We recommend pursuing the <strong>Fixed HSTA option</strong> based on your inputs (higher or comparable benefit).</p>`;
 
-    // === USAID vs State Miscellaneous Clarification
+    // === USAID vs State Clarifications
     const usaidMiscTotal = Math.min(finalMiscCap, extraClaims);
-    const stateMiscTotal = 0;
+    const stateMiscTotal = 0; // State doesn't allow tech/car rental itemization
 
     document.getElementById('usaid-breakdown').innerHTML = `
-      <p><strong>Miscellaneous (Itemized w/ Tech/Car/Battery):</strong> ${usaidMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+      <p><strong>Miscellaneous (Itemized with Tech/Car/Battery):</strong> ${usaidMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
     `;
 
     document.getElementById('state-breakdown').innerHTML = `
-      <p><strong>Miscellaneous (Strict DSSR, No Extras):</strong> ${stateMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
+      <p><strong>Miscellaneous (Strict DSSR Interpretation):</strong> ${stateMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
     `;
 
-    // Show Results
+    // === Notes Section for Fixed
+    document.getElementById('fixed-notes').innerHTML = `
+      <h4>Fixed HSTA Summary</h4>
+      <ul>
+        <li>Subsistence allowance based on 30 days maximum.</li>
+        <li>75% of CONUS M&IE rate for employee, plus 25% for each eligible dependent.</li>
+        <li>Miscellaneous expense allowance is fixed at $750 (single) or $1,500 (family).</li>
+        <li>Wardrobe allowance applies if transferring across climate zones.</li>
+        <li>Pet shipment allowance reimbursed up to $4,000.</li>
+      </ul>
+    `;
+
+    // === Notes Section for Actual
+    document.getElementById('actual-notes').innerHTML = `
+      <h4>Actual (Itemized) HSTA Summary</h4>
+      <ul>
+        <li>Subsistence reimbursable up to 60 days based on incurred expenses.</li>
+        <li>Reduced rates apply after 30 days and for dependents under age 12.</li>
+        <li>Miscellaneous expenses reimbursed up to a salary-based cap (GS-13 Step 10 or FS salary).</li>
+        <li>Tech replacement, lithium battery removal, and car rental can be claimed if itemized.</li>
+        <li>Wardrobe allowance and Pet shipment rules same as Fixed option.</li>
+      </ul>
+    `;
+
+    // === Show Results
     document.getElementById('results-section').style.display = 'block';
     document.getElementById('hsta-form').style.display = 'none';
   });
 
-  // === Buttons (Reset / Modify Inputs / Print)
+  // === Button Handlers
   const modifyInputs = document.getElementById('modify-inputs');
   if (modifyInputs) {
     modifyInputs.addEventListener('click', () => {
@@ -415,4 +441,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// === FULL main.js END ===
+// === End of main.js ===
