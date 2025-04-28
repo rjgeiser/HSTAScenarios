@@ -399,16 +399,16 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Pet shipment allowance reimbursed up to $4,000.</li>
       </ul>
     `;
-
+    
     // === Notes Section for Actual
     document.getElementById('actual-notes').innerHTML = `
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
-        <li>Subsistence reimbursable up to 60 days based on incurred expenses.</li>
-        <li>Reduced rates apply after 30 days and for dependents under age 12.</li>
-        <li>Miscellaneous expenses reimbursed up to a salary-based cap (GS-13 Step 10 or FS salary).</li>
-        <li>Tech replacement, lithium battery removal, and car rental can be claimed if itemized.</li>
-        <li>Wardrobe allowance and Pet shipment rules same as Fixed option.</li>
+        <li>Subsistence reimbursable up to 60 days based on documented lodging and meals after U.S. arrival.</li>
+        <li>Full M&IE rate applies for first 30 days; reduced rates apply thereafter.</li>
+        <li>Dependents under age 12 are reimbursed at reduced daily rates.</li>
+        <li>Lodging must be reasonable and supported by receipts; no automatic flat rate.</li>
+        <li>Miscellaneous expenses capped by GS-13 Step 10 weekly limit (~$2,106/week in 2025).</li>
       </ul>
     `;
 
