@@ -222,15 +222,18 @@ body.dark .notes-section {
   margin-bottom: 1rem;
 }
 
+/* Dual Result Row - Flex Layout */
 .dual-result-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Force side-by-side */
+  justify-content: space-between;
   gap: 2rem;
   margin-top: 1rem;
 }
 
+/* Dual Result Card Styling */
 .dual-result-card {
-  flex: 1 1 45%;
+  flex: 0 0 48%; /* 48% width per card */
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -242,9 +245,32 @@ body.dark .notes-section {
   margin-top: 0;
 }
 
+/* Dark Mode Support for Cards */
 body.dark .dual-result-card {
   background-color: var(--card);
   color: var(--text);
+}
+
+/* Notes Section Styling (Smaller Font) */
+.notes-section {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+body.dark .notes-section {
+  color: #aaa;
+}
+
+/* Responsive Behavior for Very Small Screens */
+@media (max-width: 768px) {
+  .dual-result-row {
+    flex-direction: column; /* Stack cards vertically on small devices */
+  }
+
+  .dual-result-card {
+    flex: 1 1 100%;
+  }
 }
 
 .post-results-buttons {
