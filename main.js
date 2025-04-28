@@ -422,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     // === Fixed HSTA Voucher Summary
-    // === Fixed HSTA Voucher Summary
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
@@ -448,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li>EFMs (${formData.numEFMs}): ${fixedDays} days × 25% of $168 × ${formData.numEFMs} = ${efmFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
           <li><strong>Total Subsistence:</strong> ${totalFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 251.2(a))</li>
         </ul>
-        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
+        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required, based on family status (DSSR 252.1(a))</li>
         <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
         <li><strong>Total Fixed HSTA Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
@@ -467,23 +466,61 @@ document.addEventListener('DOMContentLoaded', () => {
       </ul>
     `;
     
-    // === Updated Actual HSTA Voucher Summary
-    const employeeActualSubsistence = 168 * fixedDays; // 100% M&IE for first 30 days assumed
-    const efmAdultActualSubsistence = 168 * 0.75 * (formData.numEFMs - formData.numChildren) * fixedDays;
-    const efmChildActualSubsistence = 168 * 0.5 * (formData.numChildren) * fixedDays;
-    const totalActualSubsistence = employeeActualSubsistence + efmAdultActualSubsistence + efmChildActualSubsistence;
+     // === Updated Actual HSTA Voucher Summary (Full Detail)
+    const employeeFirst30Days = Math.min(30, eligibleDays);
+    const employeeAfter30Days = Math.max(eligibleDays - 30, 0);
+    
+    const adultEFMs = formData.numEFMs - formData.numChildren;
+    const childEFMs = formData.numChildren;
+    
+    // Employee Calculations
+    const employeeSubsistenceFirst30 = 168 * 1.0 * employeeFirst30Days;
+    const employeeSubsistenceAfter30 = 168 * 0.75 * employeeAfter30Days;
+    
+    // Adult EFM Calculations
+    const adultEFMSubsistenceFirst30 = 168 * 0.75 * employeeFirst30Days * adultEFMs;
+    const adultEFMSubsistenceAfter30 = 168 * 0.5 * employeeAfter30Days * adultEFMs;
+    
+    // Child EFM Calculations
+    const childEFMSubsistenceFirst30 = 168 * 0.5 * employeeFirst30Days * childEFMs;
+    const childEFMSubsistenceAfter30 = 168 * 0.4 * employeeAfter30Days * childEFMs;
+    
+    // Totals
+    const totalActualSubsistence = employeeSubsistenceFirst30 + employeeSubsistenceAfter30 +
+                                   adultEFMSubsistenceFirst30 + adultEFMSubsistenceAfter30 +
+                                   childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
     
     document.getElementById('actual-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Actual)</h4>
       <ul>
         <li>Subsistence Allowance:</li>
         <ul>
-          <li>Employee: ${eligibleDays} days at applicable M&IE rate (DSSR 251.2(a))</li>
-          <li>Eligible Adult EFMs: ${eligibleDays} days at 75%/50% of M&IE depending on day (DSSR 251.2(a))</li>
-          <li>Eligible Children Under 12: ${eligibleDays} days at 50%/40% of M&IE depending on day (DSSR 251.2(a))</li>
-          <li><strong>Private Lodging Adjustments:</strong> Lodging expenses not reimbursed from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}</li>
+          <li>Employee:</li>
+          <ul>
+            <li>${employeeFirst30Days} days × 100% of $168 = ${employeeSubsistenceFirst30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            <li>${employeeAfter30Days} days × 75% of $168 = ${employeeSubsistenceAfter30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          </ul>
+          <li>Adult EFMs (${adultEFMs}):</li>
+          <ul>
+            <li>${employeeFirst30Days} days × 75% of $168 × ${adultEFMs} = ${adultEFMSubsistenceFirst30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            <li>${employeeAfter30Days} days × 50% of $168 × ${adultEFMs} = ${adultEFMSubsistenceAfter30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          </ul>
+          <li>Children Under 12 (${childEFMs}):</li>
+          <ul>
+            <li>${employeeFirst30Days} days × 50% of $168 × ${childEFMs} = ${childEFMSubsistenceFirst30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            <li>${employeeAfter30Days} days × 40% of $168 × ${childEFMs} = ${childEFMSubsistenceAfter30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          </ul>
+          <li><strong>Total Subsistence:</strong> ${totalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 251.2(a))</li>
         </ul>
-        <li>Miscellaneous Expense: Claimed up to GS-13 Step 10 weekly cap (~$2,106/week in 2025) (DSSR 252.1(b))</li>
+        <li>Private Lodging Adjustment:</li>
+        <ul>
+          <li>Lodging not reimbursed from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}.</li>
+        </ul>
+        <li>Miscellaneous Expense:</li>
+          <ul>
+            <li>Eligible up to one week of salary capped at GS-13 Step 10 weekly rate (~$2,106/week for 2025) (DSSR 252.1(b)).</li>
+            <li>No receipts required for base miscellaneous allowance — employee attestation required unless claiming additional itemized expenses (tech replacement, car rental, lithium battery replacement).</li>
+          </ul>
         <li>Wardrobe Allowance: ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
         <li><strong>Total Actual HSTA Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
