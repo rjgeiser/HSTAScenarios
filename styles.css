@@ -207,6 +207,16 @@ button:hover {
   margin-top: 0;
 }
 
+.notes-section {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+body.dark .notes-section {
+  color: #aaa;
+}
+
 .dual-note {
   font-size: 0.95rem;
   margin-bottom: 1rem;
