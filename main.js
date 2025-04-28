@@ -248,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupToggle('tech-issues', 'tech-cost-section');
   setupToggle('lithium-removal', 'battery-cost-section');
   setupToggle('renting-car', 'car-rental-cost-section');
+  setupToggle('private-lodging', 'private-lodging-dates');
 
   // Form Submit Handling
   const form = document.getElementById('hsta-form');
@@ -273,7 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
       rentingCar: document.getElementById('renting-car').value === 'yes',
       techEstimate: parseFloat(document.getElementById('tech-estimate')?.value || 0),
       carRentalEstimate: parseFloat(document.getElementById('car-estimate')?.value || 0),
-      batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0)
+      batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0),
+      privateLodging: document.getElementById('private-lodging').value === 'yes',
+      privateStartDate: document.getElementById('private-start-date').value ? parseLocalDate('private-start-date') : null,
+      privateEndDate: document.getElementById('private-end-date').value ? parseLocalDate('private-end-date') : null,
     };
 
     // === Validation
