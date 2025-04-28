@@ -23,7 +23,7 @@
     <form id="hsta-form">
       <fieldset>
         <legend>Travel Dates</legend>
-        <label for="departure-date">Expected Departure Date from Post:</label>
+        <label for="departure-date">Expected Arrival Date to the U.S. from Post:</label>
         <input type="date" id="departure-date" name="departure-date" required>
 
         <label for="separation-date">Official Separation Date from USAID:</label>
@@ -359,11 +359,13 @@
     <div class="dual-result-card" id="fixed-card">
       <h3>Fixed HSTA Estimate</h3>
       <div id="fixed-breakdown"></div>
+      <div id="fixed-notes" class="notes-section"></div> <!-- Notes about fixed rules -->
     </div>
 
     <div class="dual-result-card" id="actual-card">
       <h3>Actual (Itemized) HSTA Estimate</h3>
       <div id="actual-breakdown"></div>
+      <div id="actual-notes" class="notes-section"></div> <!-- Notes about actual rules -->
     </div>
   </div>
 
