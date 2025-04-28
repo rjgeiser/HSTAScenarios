@@ -294,6 +294,13 @@ footer {
   margin-bottom: 0.5rem;
 }
 
+/* Only stack results vertically on small devices */
+@media (max-width: 768px) {
+  .dual-result-row {
+    flex-direction: column;
+  }
+}
+
 /* Hide print note during actual printing */
 @media print {
   .print-note {
