@@ -19,6 +19,16 @@ const WARDROBE_ZONE_TABLE = {
   // ... include full mapping you have (I will continue in next message if necessary due to space)
 };
 
+function getWardrobeAllowance(fromCountry, toZone = 1, hasEFMs = false) {
+  const fromZone = WARDROBE_ZONE_TABLE[fromCountry] || 1;
+  const zoneShift = Math.abs(fromZone - toZone);
+  
+  if (zoneShift === 0) return 0;
+  if (zoneShift === 1) return hasEFMs ? 700 : 350;
+  if (zoneShift >= 2) return hasEFMs ? 1400 : 700;
+  return 0;
+}
+
 // === DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   
