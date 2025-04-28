@@ -388,6 +388,30 @@ document.addEventListener('DOMContentLoaded', () => {
       <p><strong>Miscellaneous (Strict DSSR Interpretation):</strong> ${stateMiscTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</p>
     `;
 
+    // === Fixed HSTA Voucher Summary
+    document.getElementById('fixed-summary').innerHTML = `
+      <h4>Summary for HSTA Voucher (Fixed)</h4>
+      <ul>
+        <li>Subsistence: 30 days × 75% M&IE rate of $168 = $${(168 * 0.75 * 30).toLocaleString('en-US', {minimumFractionDigits: 0})} (DSSR 251.2(a))</li>
+        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
+        <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
+        <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li><strong>Total Fixed HSTA Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+      </ul>
+    `;
+
+    // === Actual (Itemized) HSTA Voucher Summary
+    document.getElementById('actual-summary').innerHTML = `
+      <h4>Summary for HSTA Voucher (Actual)</h4>
+      <ul>
+        <li>Subsistence: ${eligibleDays} days based on actual lodging + meals (variable M&IE reductions) (DSSR 251.2(a))</li>
+        <li>Miscellaneous Expense: Claimed up to GS-13 Step 10 weekly cap (~$2,106/week, 2025) (DSSR 252.1(b))</li>
+        <li>Wardrobe Allowance: ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
+        <li>Pet Shipment: ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li><strong>Total Actual HSTA Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+      </ul>
+    `;
+    
     // === Notes Section for Fixed
     document.getElementById('fixed-notes').innerHTML = `
       <h4>Fixed HSTA Summary</h4>
@@ -404,11 +428,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('actual-notes').innerHTML = `
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
-        <li>Subsistence reimbursable up to 60 days based on documented lodging and meals after U.S. arrival.</li>
-        <li>Full M&IE rate applies for first 30 days; reduced rates apply thereafter.</li>
-        <li>Dependents under age 12 are reimbursed at reduced daily rates.</li>
-        <li>Lodging must be reasonable and supported by receipts; no automatic flat rate.</li>
-        <li>Miscellaneous expenses capped by GS-13 Step 10 weekly limit (~$2,106/week in 2025).</li>
+        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals after arrival in U.S.</li>
+        <li>Employee reimbursed 100% of CONUS M&IE rate for first 30 days, then 75% thereafter.</li>
+        <li>Eligible adult EFMs reimbursed 75% of M&IE for first 30 days, then 50% thereafter.</li>
+        <li>Eligible children under 12 reimbursed 50% of M&IE for first 30 days, then 40% thereafter.</li>
+        <li>Miscellaneous expenses capped at GS-13 Step 10 weekly limit (~$2,106/week as of 2025).</li>
       </ul>
     `;
 
