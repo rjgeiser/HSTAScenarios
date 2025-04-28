@@ -315,11 +315,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let actualSubsistence = 0;
     const adultEFMs = formData.numEFMs - formData.numChildren;
     const childEFMs = formData.numChildren;
-    for (let i = 1; i <= eligibleDays; i++) {
-      const isFirst30 = i <= 30;
-      actualSubsistence += CONUS_RATE * (isFirst30 ? 1.0 : 0.75);
-      actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.5) * adultEFMs;
-      actualSubsistence += CONUS_RATE * (isFirst30 ? 0.5 : 0.4) * childEFMs;
+    
+    for (let i = 0; i < eligibleDays; i++) {
+      const currentDate = new Date(formData.departureDate);
+      currentDate.setDate(currentDate.getDate() + i);
+    
+      const isFirst30 = i < 30;
+    
+      const inPrivateLodging =
+        formData.privateLodging &&
+        formData.privateStartDate &&
+        formData.privateEndDate &&
+        currentDate >= formData.privateStartDate &&
+        currentDate <= formData.privateEndDate;
+    
+      if (inPrivateLodging) {
+        // Only M&IE portion allowed (no lodging)
+        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.75);
+        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.5) * adultEFMs;
+        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.5 : 0.4) * childEFMs;
+      } else {
+        // Full rate applies (lodging + M&IE)
+        actualSubsistence += CONUS_RATE * (isFirst30 ? 1.0 : 0.75);
+        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.5) * adultEFMs;
+        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.5 : 0.4) * childEFMs;
+      }
     }
 
     // Miscellaneous (Actual)
