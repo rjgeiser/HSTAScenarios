@@ -470,9 +470,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const employeeFirst30Days = Math.min(30, eligibleDays);
     const employeeAfter30Days = Math.max(eligibleDays - 30, 0);
     
-    const adultEFMs = formData.numEFMs - formData.numChildren;
-    const childEFMs = formData.numChildren;
-    
     // Employee Calculations
     const employeeSubsistenceFirst30 = 168 * 1.0 * employeeFirst30Days;
     const employeeSubsistenceAfter30 = 168 * 0.75 * employeeAfter30Days;
