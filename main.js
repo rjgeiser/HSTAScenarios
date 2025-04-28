@@ -13,6 +13,13 @@ const FS_SALARY_TABLE = {
 const GS13_STEP10_HOURLY = 52.66;
 const GS13_STEP10_WEEKLY = 2106.40;
 
+// Parse Local Date From Input (prevents UTC offset errors)
+function parseLocalDate(inputId) {
+  const input = document.getElementById(inputId).value;
+  const [year, month, day] = input.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 // Wardrobe Zone Mapping
 const WARDROBE_ZONE_TABLE = {
  "Afghanistan": 1,
@@ -249,15 +256,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Parse Form Data
     const formData = {
-      departureDate: new Date(document.getElementById('departure-date').value),
-      separationDate: new Date(document.getElementById('separation-date').value),
+      departureDate: parseLocalDate('departure-date'),
+      separationDate: parseLocalDate('separation-date'),
       hasFamily: document.getElementById('has-family').value === 'yes',
       numEFMs: parseInt(document.getElementById('num-efms')?.value || 0),
       numChildren: parseInt(document.getElementById('num-children')?.value || 0),
       fsGrade: document.getElementById('fs-grade').value,
       fsStep: parseInt(document.getElementById('fs-step').value),
       permHousing: document.getElementById('perm-housing').value === 'yes',
-      moveInDate: document.getElementById('move-in-date').value ? new Date(document.getElementById('move-in-date').value) : null,
+      moveInDate: document.getElementById('move-in-date').value ? parseLocalDate('move-in-date') : null,
       shippingCar: document.getElementById('shipping-car').value === 'yes',
       shippingPet: document.getElementById('shipping-pet').value === 'yes',
       departureCountry: document.getElementById('departure-country').value.trim(),
@@ -334,9 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
     scenarioSummary.innerHTML = `
       <div class="summary-grid">
         <div><h4>Travel Information</h4><ul>
-          <li><strong>Departure Date:</strong> ${formData.departureDate.toLocaleDateString()}</li>
+          <li><strong>Arrival Date to U.S.:</strong> ${formData.departureDate.toLocaleDateString()}</li>
           <li><strong>Separation Date:</strong> ${formData.separationDate.toLocaleDateString()}</li>
           <li><strong>Departure Country:</strong> ${formData.departureCountry}</li>
+          <li><strong>Fixed HSTA Eligible Days:</strong> ${fixedDays} day(s)</li>
+          <li><strong>Actual HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
         </ul></div>
         <div><h4>Family Information</h4><ul>
           <li><strong>Number of EFMs:</strong> ${formData.numEFMs} (${formData.numChildren} under 12)</li>
@@ -389,10 +398,11 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     // === Fixed HSTA Voucher Summary
+    // === Fixed HSTA Voucher Summary
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
-        <li>Subsistence: 30 days × 75% M&IE rate of $168 = $${(168 * 0.75 * 30).toLocaleString('en-US', {minimumFractionDigits: 0})} (DSSR 251.2(a))</li>
+        <li>Subsistence: ${fixedDays} days × 75% M&IE rate of $168 = $${(168 * 0.75 * fixedDays).toLocaleString('en-US', {minimumFractionDigits: 0})} (DSSR 251.2(a))</li>
         <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
         <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
