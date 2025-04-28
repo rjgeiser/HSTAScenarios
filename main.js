@@ -434,15 +434,24 @@ document.addEventListener('DOMContentLoaded', () => {
       </ul>
     `;
 
-    // === Actual (Itemized) HSTA Voucher Summary
-    document.getElementById('actual-summary').innerHTML = `
-      <h4>Summary for HSTA Voucher (Actual)</h4>
+    // === Updated Fixed HSTA Voucher Summary
+    const employeeFixedSubsistence = 168 * 0.75 * fixedDays;
+    const efmFixedSubsistence = 168 * 0.25 * formData.numEFMs * fixedDays;
+    const totalFixedSubsistence = employeeFixedSubsistence + efmFixedSubsistence;
+    
+    document.getElementById('fixed-summary').innerHTML = `
+      <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
-        <li>Subsistence: ${eligibleDays} days based on actual lodging + meals (variable M&IE reductions) (DSSR 251.2(a))</li>
-        <li>Miscellaneous Expense: Claimed up to GS-13 Step 10 weekly cap (~$2,106/week, 2025) (DSSR 252.1(b))</li>
-        <li>Wardrobe Allowance: ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
-        <li>Pet Shipment: ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Total Actual HSTA Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+        <li>Subsistence Allowance:</li>
+        <ul>
+          <li>Employee: ${fixedDays} days × 75% of $168 = ${employeeFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li>EFMs (${formData.numEFMs}): ${fixedDays} days × 25% of $168 × ${formData.numEFMs} = ${efmFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li><strong>Total Subsistence:</strong> ${totalFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 251.2(a))</li>
+        </ul>
+        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
+        <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
+        <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li><strong>Total Fixed HSTA Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
       </ul>
     `;
     
@@ -458,15 +467,26 @@ document.addEventListener('DOMContentLoaded', () => {
       </ul>
     `;
     
-    // === Notes Section for Actual
-    document.getElementById('actual-notes').innerHTML = `
-      <h4>Actual (Itemized) HSTA Summary</h4>
+    // === Updated Actual HSTA Voucher Summary
+    const employeeActualSubsistence = 168 * fixedDays; // 100% M&IE for first 30 days assumed
+    const efmAdultActualSubsistence = 168 * 0.75 * (formData.numEFMs - formData.numChildren) * fixedDays;
+    const efmChildActualSubsistence = 168 * 0.5 * (formData.numChildren) * fixedDays;
+    const totalActualSubsistence = employeeActualSubsistence + efmAdultActualSubsistence + efmChildActualSubsistence;
+    
+    document.getElementById('actual-summary').innerHTML = `
+      <h4>Summary for HSTA Voucher (Actual)</h4>
       <ul>
-        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals after arrival in U.S.</li>
-        <li>Employee reimbursed 100% of CONUS M&IE rate for first 30 days, then 75% thereafter.</li>
-        <li>Eligible adult EFMs reimbursed 75% of M&IE for first 30 days, then 50% thereafter.</li>
-        <li>Eligible children under 12 reimbursed 50% of M&IE for first 30 days, then 40% thereafter.</li>
-        <li>Miscellaneous expenses capped at GS-13 Step 10 weekly limit (~$2,106/week as of 2025).</li>
+        <li>Subsistence Allowance:</li>
+        <ul>
+          <li>Employee: ${eligibleDays} days at applicable M&IE rate (DSSR 251.2(a))</li>
+          <li>Eligible Adult EFMs: ${eligibleDays} days at 75%/50% of M&IE depending on day (DSSR 251.2(a))</li>
+          <li>Eligible Children Under 12: ${eligibleDays} days at 50%/40% of M&IE depending on day (DSSR 251.2(a))</li>
+          <li><strong>Private Lodging Adjustments:</strong> Lodging expenses not reimbursed from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}</li>
+        </ul>
+        <li>Miscellaneous Expense: Claimed up to GS-13 Step 10 weekly cap (~$2,106/week in 2025) (DSSR 252.1(b))</li>
+        <li>Wardrobe Allowance: ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
+        <li>Pet Shipment: ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li><strong>Total Actual HSTA Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
       </ul>
     `;
 
