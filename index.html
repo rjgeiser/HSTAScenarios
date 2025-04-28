@@ -108,6 +108,21 @@
           <option value="yes">Yes</option>
         </select>
 
+        <label for="private-lodging">Will you be staying with family or friends (private lodging)?</label>
+        <select id="private-lodging" name="private-lodging" required>
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        
+        <div id="private-lodging-dates" style="display: none;">
+          <label for="private-start-date">Private Lodging Start Date:</label>
+          <input type="date" id="private-start-date" name="private-start-date">
+        
+          <label for="private-end-date">Private Lodging End Date:</label>
+          <input type="date" id="private-end-date" name="private-end-date">
+        </div>
+
         <label for="departure-country">What country are you departing from?</label>
         <select id="departure-country" name="departure-country" required>
           <option value="">-- Select Country --</option>
