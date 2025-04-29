@@ -578,31 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('results-section').style.display = 'none';
       document.querySelector('.container').classList.remove('show-results');
   
-      // Also clear scenario summary and breakdowns if needed
-      const summarySection = document.getElementById('scenario-summary');
-      if (summarySection) summarySection.innerHTML = '';
-  
-      const fixedBreakdown = document.getElementById('fixed-breakdown');
-      if (fixedBreakdown) fixedBreakdown.innerHTML = '';
-  
-      const actualBreakdown = document.getElementById('actual-breakdown');
-      if (actualBreakdown) actualBreakdown.innerHTML = '';
-  
-      const recommendation = document.getElementById('fixed-actual-recommendation');
-      if (recommendation) recommendation.innerHTML = '';
-  
-      const fixedSummary = document.getElementById('fixed-summary');
-      if (fixedSummary) fixedSummary.innerHTML = '';
-  
-      const actualSummary = document.getElementById('actual-summary');
-      if (actualSummary) actualSummary.innerHTML = '';
-  
-      const usaidBreakdown = document.getElementById('usaid-breakdown');
-      if (usaidBreakdown) usaidBreakdown.innerHTML = '';
-  
-      const stateBreakdown = document.getElementById('state-breakdown');
-      if (stateBreakdown) stateBreakdown.innerHTML = '';
-  
       console.log('Form reset and results cleared.');
     });
   }
