@@ -459,11 +459,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Total Fixed HSTA Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
       </ul>
     `;
-
-    // === Updated Fixed HSTA Voucher Summary
-    const employeeFixedSubsistence = 168 * 0.75 * fixedDays;
-    const efmFixedSubsistence = 168 * 0.25 * formData.numEFMs * fixedDays;
-    const totalFixedSubsistence = employeeFixedSubsistence + efmFixedSubsistence;
     
     // === Updated Fixed HSTA Voucher Summary
     document.getElementById('fixed-summary').innerHTML = `
