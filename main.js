@@ -11,9 +11,9 @@ const FS_SALARY_TABLE = {
 };
 
 // FY2025 GSA Standard CONUS Rates
-export const PER_DIEM_TOTAL = 178;   // Total daily per diem ($110 lodging + $68 M&IE)
-export const PER_DIEM_LODGING = 110; // Lodging component
-export const PER_DIEM_MIE = 68;      // Meals and Incidental Expenses component
+const PER_DIEM_TOTAL = 178;   // Total daily per diem ($110 lodging + $68 M&IE)
+const PER_DIEM_LODGING = 110; // Lodging component
+const PER_DIEM_MIE = 68;      // Meals and Incidental Expenses component
 
 // GS-13 Step 10 Weekly Cap for Miscellaneous Expenses (Approximate for 2025)
 const GS13_STEP10_HOURLY = 52.66;
