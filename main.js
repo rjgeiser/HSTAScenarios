@@ -438,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // === USAID vs State Clarifications
     const usaidMiscTotal = Math.min(finalMiscCap, extraClaims);
-    const stateMiscTotal = 0; // State doesn't allow tech/car rental itemization
+    const stateMiscTotal = Math.min(finalMiscCap, GS13_STEP10_WEEKLY);
     
     document.getElementById('usaid-breakdown').innerHTML = `
       <p><strong>Miscellaneous (Itemized with Tech/Car/Battery):</strong> ${Math.round(usaidMiscTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
@@ -531,7 +531,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </ul>
           </ul>
         <li>Private Lodging Adjustment: ${formData.privateLodging ? `Private lodging from ${formData.privateStartDate.toLocaleDateString()} to ${formData.privateEndDate.toLocaleDateString()} — only M&IE reimbursed.` : 'N/A'}</li>
-        <li>Miscellaneous Expense: Eligible up to GS-13 Step 10 weekly cap (~$2,106/week 2025) — attestation required (DSSR 252.1(b))</li>
+        <li>Miscellaneous Expense: Eligible up to GS-13 Step 10 weekly cap (~$2,106/week in 2025).  
+            Attestation required for base miscellaneous allowance.  
+            Receipts required if claiming technology replacement, car rental, or lithium battery removal. (DSSR 252.1(b))</li>
         <li>Wardrobe Allowance: ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} — receipts required (14 FAM 615.3)</li>
         <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
@@ -547,7 +549,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
-        <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week), attestation required. (DSSR 252.1(b))</li>
+        <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week in 2025).  
+            Attestation required for base allowance.  
+            Receipts required for technology replacement, car rental, or lithium battery removal claims. (DSSR 252.1(b))</li>
       </ul>
     `;
     
