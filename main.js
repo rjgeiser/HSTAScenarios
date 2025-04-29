@@ -578,12 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('results-section').style.display = 'none';
       document.querySelector('.container').classList.remove('show-results');
   
-      const errorDiv = document.getElementById('form-errors');
-      if (errorDiv) {
-        errorDiv.innerHTML = '';
-        errorDiv.style.display = 'none';
-      }
-  
       // Also clear scenario summary and breakdowns if needed
       const summarySection = document.getElementById('scenario-summary');
       if (summarySection) summarySection.innerHTML = '';
