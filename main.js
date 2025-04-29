@@ -569,6 +569,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetButton = document.getElementById('reset-form');
   if (resetButton) {
     resetButton.addEventListener('click', () => {
+      document.getElementById('results-section').style.display = 'none';
+      document.getElementById('hsta-form').style.display = 'block';
       const form = document.getElementById('hsta-form');
       if (form) {
         form.reset();
