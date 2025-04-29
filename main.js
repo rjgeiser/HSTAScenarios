@@ -565,10 +565,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // === Reset Button Handler
   const resetButton = document.getElementById('reset-form');
   if (resetButton) {
     resetButton.addEventListener('click', () => {
-      window.location.reload();
+      const form = document.getElementById('hsta-form');
+      if (form) {
+        form.reset();
+      }
+      document.getElementById('results-section').style.display = 'none';
+      document.querySelector('.container').classList.remove('show-results');
+  
+      const errorDiv = document.getElementById('form-errors');
+      if (errorDiv) {
+        errorDiv.innerHTML = '';
+        errorDiv.style.display = 'none';
+      }
+  
+      // Also clear scenario summary and breakdowns if needed
+      const summarySection = document.getElementById('scenario-summary');
+      if (summarySection) summarySection.innerHTML = '';
+  
+      const fixedBreakdown = document.getElementById('fixed-breakdown');
+      if (fixedBreakdown) fixedBreakdown.innerHTML = '';
+  
+      const actualBreakdown = document.getElementById('actual-breakdown');
+      if (actualBreakdown) actualBreakdown.innerHTML = '';
+  
+      const recommendation = document.getElementById('fixed-actual-recommendation');
+      if (recommendation) recommendation.innerHTML = '';
+  
+      const fixedSummary = document.getElementById('fixed-summary');
+      if (fixedSummary) fixedSummary.innerHTML = '';
+  
+      const actualSummary = document.getElementById('actual-summary');
+      if (actualSummary) actualSummary.innerHTML = '';
+  
+      const usaidBreakdown = document.getElementById('usaid-breakdown');
+      if (usaidBreakdown) usaidBreakdown.innerHTML = '';
+  
+      const stateBreakdown = document.getElementById('state-breakdown');
+      if (stateBreakdown) stateBreakdown.innerHTML = '';
+  
+      console.log('Form reset and results cleared.');
     });
   }
 
