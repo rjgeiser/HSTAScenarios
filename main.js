@@ -516,18 +516,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <ul>
           <li><strong>Employee:</strong></li>
             <ul>
-              <li>${employeeFirst30Days} days × 100% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day = ${Math.round((employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 1.0)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
-              <li>${employeeAfter30Days} days × 75% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day = ${Math.round((employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.75)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeFirst30Days} days × 100% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 1.0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeAfter30Days} days × 75% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day = ${Math.round(employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.75).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
             </ul>
             <li><strong>Adult EFMs (${adultEFMs}):</strong></li>
             <ul>
-              <li>${employeeFirst30Days} days × 75% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${adultEFMs} = ${Math.round((employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.75 * adultEFMs)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              <li>${employeeAfter30Days} days × 50% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${adultEFMs} = ${Math.round((employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.5 * adultEFMs)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeFirst30Days} days × 75% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${adultEFMs} = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.75 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+              <li>${employeeAfter30Days} days × 50% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${adultEFMs} = ${Math.round(employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.5 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
             </ul>
             <li><strong>Children Under 12 (${childEFMs}):</strong></li>
             <ul>
-              <li>${employeeFirst30Days} days × 50% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${childEFMs} = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.5 * childEFMs)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
-              <li>${employeeAfter30Days} days × 40% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${childEFMs} = ${Math.round((employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.4 * childEFMs)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeFirst30Days} days × 50% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${childEFMs} = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.5 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeAfter30Days} days × 40% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${childEFMs} = ${Math.round(employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.4 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
             </ul>
           </ul>
         <li>Private Lodging Adjustment: ${formData.privateLodging ? `Private lodging from ${formData.privateStartDate.toLocaleDateString()} to ${formData.privateEndDate.toLocaleDateString()} — only M&IE reimbursed.` : 'N/A'}</li>
