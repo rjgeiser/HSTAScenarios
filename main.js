@@ -524,6 +524,20 @@ document.addEventListener('DOMContentLoaded', () => {
       </ul>
     `;
 
+    // === Notes Section for Actual
+     document.getElementById('actual-notes').innerHTML = `
+       <h4>Actual (Itemized) HSTA Summary</h4>
+         <ul>
+          <li>Subsistence reimbursable up to 60 days based on actual lodging and meals after arrival in U.S.</li>
+          <li>Employee reimbursed 100% of CONUS M&IE rate for first 30 days, then 75% thereafter.</li>
+          <li>Eligible adult EFMs reimbursed 75% of M&IE for first 30 days, then 50% thereafter.</li>
+          <li>Eligible children under 12 reimbursed 50% of M&IE for first 30 days, then 40% thereafter.</li>
+          <li>Miscellaneous Expense: Claimed up to GS-13 Step 10 weekly cap (~$2,106/week in 2025) (DSSR 252.1(b))</li>
+          <li>Wardrobe allowance applies if transferring across climate zones.</li>
+          <li>Pet shipment allowance reimbursed up to $4,000.</li>
+         </ul>
+       `;
+    
     // === Show Results
     document.getElementById('results-section').style.display = 'block';
     document.getElementById('hsta-form').style.display = 'none';
