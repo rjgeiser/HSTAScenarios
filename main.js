@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </ul>
         <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required (DSSR 252.1(a))</li>
         <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
-        <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} — receipts required (14 FAM 615.3)</li>
         <li><strong>Total Fixed HSTA Estimate:</strong> ${Math.round(fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
       </ul>
     `;
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Subsistence reimbursed up to 30 days based on 75% of the full CONUS rate ($178) for employee; 25% of full CONUS rate ($178) per EFM. (DSSR 251.2(a))</li>
         <li>Miscellaneous Expense flat $750 (single) or $1,500 (family), no receipts required. (DSSR 252.1(a))</li>
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
-        <li>Pet shipment allowance reimbursed up to $4,000. (14 FAM 615.3)</li>
+        <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet. (14 FAM 615.3)</li>
       </ul>
     `;
         
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Private Lodging Adjustment: ${formData.privateLodging ? `Private lodging from ${formData.privateStartDate.toLocaleDateString()} to ${formData.privateEndDate.toLocaleDateString()} — only M&IE reimbursed.` : 'N/A'}</li>
         <li>Miscellaneous Expense: Eligible up to GS-13 Step 10 weekly cap (~$2,106/week 2025) — attestation required (DSSR 252.1(b))</li>
         <li>Wardrobe Allowance: ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} (DSSR 242.1)</li>
-        <li>Pet Shipment: ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} (14 FAM 615.3)</li>
+        <li>Pet Shipment: ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} — receipts required (14 FAM 615.3)</li>
         <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
       </ul>
     `;
@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
         <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
-        <li>Pet shipment allowance reimbursed up to $4,000 (14 FAM 615.3).</li>
+        <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
         <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week), attestation required. (DSSR 252.1(b))</li>
       </ul>
     `;
