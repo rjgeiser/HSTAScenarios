@@ -10,6 +10,12 @@ const FS_SALARY_TABLE = {
   "FS-01": {1: 125133, 2: 128887, 3: 132754, 4: 136736, 5: 140838, 6: 145063, 7: 149415, 8: 153898, 9: 158515, 10: 162672, 11: 162672, 12: 162672, 13: 162672, 14: 162672}
 };
 
+// FY2025 GSA Standard CONUS Rates
+export const PER_DIEM_TOTAL = 178;   // Total daily per diem ($110 lodging + $68 M&IE)
+export const PER_DIEM_LODGING = 110; // Lodging component
+export const PER_DIEM_MIE = 68;      // Meals and Incidental Expenses component
+
+// GS-13 Step 10 Weekly Cap for Miscellaneous Expenses (Approximate for 2025)
 const GS13_STEP10_HOURLY = 52.66;
 const GS13_STEP10_WEEKLY = 2106.40;
 
@@ -301,21 +307,40 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // === Private Lodging Validation
+    if (formData.privateLodging) {
+      if (!formData.privateStartDate || !formData.privateEndDate) {
+        errors.push("Please enter both a Private Lodging Start Date and End Date.");
+      } else {
+        if (formData.privateStartDate < formData.departureDate) {
+          errors.push("Private Lodging Start Date cannot be before Arrival Date.");
+        }
+        if (formData.privateEndDate < formData.privateStartDate) {
+          errors.push("Private Lodging End Date cannot be before Private Lodging Start Date.");
+        }
+      }
+    }
+
     // ==== Calculations
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
     const CONUS_RATE = 168;
     const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
     const eligibleDays = Math.min(60, Math.max(0, daysBetween));
-    const fixedDays = Math.min(30, eligibleDays);
 
-    // Fixed HSTA Calculation
-    const fixedSubsistence = CONUS_RATE * fixedDays * (0.75 + (formData.numEFMs * 0.25));
+    // Fixed HSTA Subsistence Calculation
+    const fixedDays = Math.min(30, eligibleDays); // Cap at 30 days
+    const employeeFixedSubsistence = PER_DIEM_TOTAL * 0.75 * fixedDays;
+    const efmFixedSubsistence = PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays;
+    const fixedSubsistence = employeeFixedSubsistence + efmFixedSubsistence;
+
+    // Other HSTA Calculations
     const fixedMisc = formData.hasFamily ? 1500 : 750;
     const fixedWardrobe = getWardrobeAllowance(formData.departureCountry, 1, formData.hasFamily);
     const fixedPet = formData.shippingPet ? 4000 : 0;
     const fixedTotal = fixedSubsistence + fixedMisc + fixedWardrobe + fixedPet;
 
     // Actual (Itemized) HSTA Calculation
+    // === Updated Actual Subsistence Calculation
     let actualSubsistence = 0;
     const adultEFMs = formData.numEFMs - formData.numChildren;
     const childEFMs = formData.numChildren;
@@ -325,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentDate.setDate(currentDate.getDate() + i);
     
       const isFirst30 = i < 30;
-    
+      
       const inPrivateLodging =
         formData.privateLodging &&
         formData.privateStartDate &&
@@ -333,17 +358,19 @@ document.addEventListener('DOMContentLoaded', () => {
         currentDate >= formData.privateStartDate &&
         currentDate <= formData.privateEndDate;
     
-      if (inPrivateLodging) {
-        // Only M&IE portion allowed (no lodging)
-        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.75);
-        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.5) * adultEFMs;
-        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.5 : 0.4) * childEFMs;
-      } else {
-        // Full rate applies (lodging + M&IE)
-        actualSubsistence += CONUS_RATE * (isFirst30 ? 1.0 : 0.75);
-        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.75 : 0.5) * adultEFMs;
-        actualSubsistence += CONUS_RATE * (isFirst30 ? 0.5 : 0.4) * childEFMs;
-      }
+      const applicablePerDiem = inPrivateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL;
+    
+      // Employee Rate
+      const empRate = isFirst30 ? 1.0 : 0.75;
+      actualSubsistence += applicablePerDiem * empRate;
+    
+      // Adult EFMs Rate
+      const efmAdultRate = isFirst30 ? 0.75 : 0.5;
+      actualSubsistence += applicablePerDiem * efmAdultRate * adultEFMs;
+    
+      // Child EFMs Rate
+      const efmChildRate = isFirst30 ? 0.5 : 0.4;
+      actualSubsistence += applicablePerDiem * efmChildRate * childEFMs;
     }
 
     // Miscellaneous (Actual)
@@ -438,34 +465,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const efmFixedSubsistence = 168 * 0.25 * formData.numEFMs * fixedDays;
     const totalFixedSubsistence = employeeFixedSubsistence + efmFixedSubsistence;
     
+    // === Updated Fixed HSTA Voucher Summary
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
         <li>Subsistence Allowance:</li>
         <ul>
-          <li>Employee: ${fixedDays} days × 75% of $168 = ${employeeFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-          <li>EFMs (${formData.numEFMs}): ${fixedDays} days × 25% of $168 × ${formData.numEFMs} = ${efmFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-          <li><strong>Total Subsistence:</strong> ${totalFixedSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 251.2(a))</li>
+          <li>Employee: ${fixedDays} days × 75% of $178 = ${(PER_DIEM_TOTAL * 0.75 * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li>EFMs (${formData.numEFMs}): ${fixedDays} days × 25% of $178 × ${formData.numEFMs} = ${(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
         </ul>
-        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required, based on family status (DSSR 252.1(a))</li>
+        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required (DSSR 252.1(a))</li>
         <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
         <li><strong>Total Fixed HSTA Estimate:</strong> ${fixedTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
       </ul>
     `;
     
-    // === Notes Section for Fixed
+    // === Updated Notes Section for Fixed
     document.getElementById('fixed-notes').innerHTML = `
       <h4>Fixed HSTA Summary</h4>
       <ul>
-        <li>Subsistence allowance based on 30 days maximum.</li>
-        <li>75% of CONUS M&IE rate for employee, plus 25% for each eligible dependent.</li>
-        <li>Miscellaneous expense allowance is fixed at $750 (single) or $1,500 (family).</li>
-        <li>Wardrobe allowance applies if transferring across climate zones.</li>
-        <li>Pet shipment allowance reimbursed up to $4,000.</li>
+        <li>Subsistence reimbursed up to 30 days based on 75% of the full CONUS rate ($178) for employee; 25% of full CONUS rate ($178) per EFM. (DSSR 251.2(a))</li>
+        <li>Miscellaneous Expense flat $750 (single) or $1,500 (family), no receipts required. (DSSR 252.1(a))</li>
+        <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
+        <li>Pet shipment allowance reimbursed up to $4,000. (14 FAM 615.3)</li>
       </ul>
     `;
-    
+        
      // === Updated Actual HSTA Voucher Summary (Full Detail)
     const employeeFirst30Days = Math.min(30, eligibleDays);
     const employeeAfter30Days = Math.max(eligibleDays - 30, 0);
@@ -487,56 +513,36 @@ document.addEventListener('DOMContentLoaded', () => {
                                    adultEFMSubsistenceFirst30 + adultEFMSubsistenceAfter30 +
                                    childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
     
+    // === Updated Actual HSTA Voucher Summary
     document.getElementById('actual-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Actual)</h4>
       <ul>
         <li>Subsistence Allowance:</li>
         <ul>
-          <li>Employee:</li>
-          <ul>
-            <li>${employeeFirst30Days} days × 100% of $168 = ${employeeSubsistenceFirst30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-            <li>${employeeAfter30Days} days × 75% of $168 = ${employeeSubsistenceAfter30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-          </ul>
-          <li>Adult EFMs (${adultEFMs}):</li>
-          <ul>
-            <li>${employeeFirst30Days} days × 75% of $168 × ${adultEFMs} = ${adultEFMSubsistenceFirst30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-            <li>${employeeAfter30Days} days × 50% of $168 × ${adultEFMs} = ${adultEFMSubsistenceAfter30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-          </ul>
-          <li>Children Under 12 (${childEFMs}):</li>
-          <ul>
-            <li>${employeeFirst30Days} days × 50% of $168 × ${childEFMs} = ${childEFMSubsistenceFirst30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-            <li>${employeeAfter30Days} days × 40% of $168 × ${childEFMs} = ${childEFMSubsistenceAfter30.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-          </ul>
-          <li><strong>Total Subsistence:</strong> ${totalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 251.2(a))</li>
+          <li>Employee: ${eligibleDays} days — 100%/75% of ${PER_DIEM_TOTAL} if lodging; 100%/75% of ${PER_DIEM_MIE} if private lodging (DSSR 251.2(b))</li>
+          <li>Adult EFMs (${adultEFMs}): ${eligibleDays} days — 75%/50% of ${PER_DIEM_TOTAL} if lodging; 75%/50% of ${PER_DIEM_MIE} if private lodging (DSSR 251.2(b))</li>
+          <li>Children Under 12 (${childEFMs}): ${eligibleDays} days — 50%/40% of ${PER_DIEM_TOTAL} if lodging; 50%/40% of ${PER_DIEM_MIE} if private lodging (DSSR 251.2(b))</li>
         </ul>
-        <li>Private Lodging Adjustment:</li>
-        <ul>
-          <li>Lodging not reimbursed from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}.</li>
-        </ul>
-        <li>Miscellaneous Expense:</li>
-          <ul>
-            <li>Eligible up to one week of salary capped at GS-13 Step 10 weekly rate (~$2,106/week for 2025) (DSSR 252.1(b)).</li>
-            <li>No receipts required for base miscellaneous allowance — employee attestation required unless claiming additional itemized expenses (tech replacement, car rental, lithium battery replacement).</li>
-          </ul>
+        <li>Private Lodging Adjustment: ${formData.privateLodging ? `Private lodging from ${formData.privateStartDate.toLocaleDateString()} to ${formData.privateEndDate.toLocaleDateString()} — only M&IE reimbursed.` : 'N/A'}</li>
+        <li>Miscellaneous Expense: Eligible up to GS-13 Step 10 weekly cap (~$2,106/week 2025) — attestation required (DSSR 252.1(b))</li>
         <li>Wardrobe Allowance: ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
         <li><strong>Total Actual HSTA Estimate:</strong> ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
       </ul>
     `;
 
-    // === Notes Section for Actual
-     document.getElementById('actual-notes').innerHTML = `
-       <h4>Actual (Itemized) HSTA Summary</h4>
-         <ul>
-          <li>Subsistence reimbursable up to 60 days based on actual lodging and meals after arrival in U.S.</li>
-          <li>Employee reimbursed 100% of CONUS M&IE rate for first 30 days, then 75% thereafter.</li>
-          <li>Eligible adult EFMs reimbursed 75% of M&IE for first 30 days, then 50% thereafter.</li>
-          <li>Eligible children under 12 reimbursed 50% of M&IE for first 30 days, then 40% thereafter.</li>
-          <li>Miscellaneous Expense: Claimed up to GS-13 Step 10 weekly cap (~$2,106/week in 2025) (DSSR 252.1(b))</li>
-          <li>Wardrobe allowance applies if transferring across climate zones.</li>
-          <li>Pet shipment allowance reimbursed up to $4,000.</li>
-         </ul>
-       `;
+    // === Updated Notes Section for Actual
+    document.getElementById('actual-notes').innerHTML = `
+      <h4>Actual (Itemized) HSTA Summary</h4>
+      <ul>
+        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 251.2(b)).</li>
+        <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
+        <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
+        <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
+        <li>Pet shipment allowance reimbursed up to $4,000 (14 FAM 615.3).</li>
+        <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week), attestation required. (DSSR 252.1(b))</li>
+      </ul>
+    `;
     
     // === Show Results
     document.getElementById('results-section').style.display = 'block';
