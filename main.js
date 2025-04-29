@@ -565,16 +565,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // === Reset Button Handler
+  // === Clean Reset Button Handler
   const resetButton = document.getElementById('reset-form');
   if (resetButton) {
     resetButton.addEventListener('click', () => {
-      document.getElementById('results-section').style.display = 'none';
-      document.getElementById('hsta-form').style.display = 'block';
       const form = document.getElementById('hsta-form');
       if (form) {
         form.reset();
+        form.style.display = 'block'; // Make sure form is visible again
       }
+  
       document.getElementById('results-section').style.display = 'none';
       document.querySelector('.container').classList.remove('show-results');
   
