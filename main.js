@@ -438,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // === USAID vs State Clarifications
     const usaidMiscTotal = Math.min(finalMiscCap, extraClaims);
-    const stateMiscTotal = Math.min(finalMiscCap, GS13_STEP10_WEEKLY);
+    const stateMiscTotal = actualMisc;
     
     document.getElementById('usaid-breakdown').innerHTML = `
       <p><strong>Miscellaneous (Itemized with Tech/Car/Battery):</strong> ${Math.round(usaidMiscTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
