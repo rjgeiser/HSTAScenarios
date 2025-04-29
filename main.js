@@ -508,45 +508,66 @@ document.addEventListener('DOMContentLoaded', () => {
                                    adultEFMSubsistenceFirst30 + adultEFMSubsistenceAfter30 +
                                    childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
     
-    // === Updated Actual HSTA Voucher Summary
-    document.getElementById('actual-summary').innerHTML = `
-      <h4>Summary for HSTA Voucher (Actual)</h4>
-      <ul>
-        <li>Subsistence Allowance:</li>
+    // === Fully DSSR-Compliant Actual HSTA Subsistence Breakdown
+      document.getElementById('actual-summary').innerHTML = `
+        <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Employee:</strong></li>
+          <li><strong>Subsistence Allowance (Lodging and M&IE separated):</strong></li>
+      
+          <li><strong>Lodging Allowance:</strong></li>
+          <ul>
+            ${formData.privateLodging ? `
+              <li>Private Lodging Selected: Lodging reimbursement not applicable from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}.</li>
+            ` : `
+              <li>Lodging reimbursement calculated as 1 unit per family per day: ${eligibleDays} days × $${PER_DIEM_LODGING} = ${(eligibleDays * PER_DIEM_LODGING).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            `}
+          </ul>
+      
+          <li><strong>Meals and Incidental Expenses (M&IE):</strong></li>
+          <ul>
+            <li>Employee:</li>
             <ul>
-              <li>${employeeFirst30Days} days × 100% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 1.0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
-              <li>${employeeAfter30Days} days × 75% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day = ${Math.round(employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.75).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeFirst30Days} days × 100% of $${PER_DIEM_MIE} = ${(employeeFirst30Days * PER_DIEM_MIE * 1.0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${employeeAfter30Days} days × 75% of $${PER_DIEM_MIE} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.75).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
             </ul>
-            <li><strong>Adult EFMs (${adultEFMs}):</strong></li>
+            <li>Adult EFMs (${adultEFMs}):</li>
             <ul>
-              <li>${employeeFirst30Days} days × 75% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${adultEFMs} = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.75 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              <li>${employeeAfter30Days} days × 50% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${adultEFMs} = ${Math.round(employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.5 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeFirst30Days} days × 75% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.75 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${employeeAfter30Days} days × 50% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.5 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
             </ul>
-            <li><strong>Children Under 12 (${childEFMs}):</strong></li>
+            <li>Children Under 12 (${childEFMs}):</li>
             <ul>
-              <li>${employeeFirst30Days} days × 50% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${childEFMs} = ${Math.round(employeeFirst30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.5 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
-              <li>${employeeAfter30Days} days × 40% of ${formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL}/day × ${childEFMs} = ${Math.round(employeeAfter30Days * (formData.privateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL) * 0.4 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+              <li>${employeeFirst30Days} days × 50% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.5 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${employeeAfter30Days} days × 40% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.4 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
             </ul>
           </ul>
-        <li>Private Lodging Adjustment: ${formData.privateLodging ? `Private lodging from ${formData.privateStartDate.toLocaleDateString()} to ${formData.privateEndDate.toLocaleDateString()} — only M&IE reimbursed.` : 'N/A'}</li>
-        <li>Miscellaneous Expense: Eligible up to GS-13 Step 10 weekly cap (~$2,106/week in 2025).  
-            Attestation required for base miscellaneous allowance.  
-            Receipts required if claiming technology replacement, car rental, or lithium battery removal. (DSSR 252.1(b))</li>
-        <li>Wardrobe Allowance: ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} (DSSR 242.1)</li>
-        <li>Pet Shipment: ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} — receipts required (14 FAM 615.3)</li>
-        <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
-      </ul>
-    `;
-
+      
+          <li><strong>Miscellaneous Expense:</strong>  
+          Eligible up to GS-13 Step 10 weekly cap (~$2,106/week in 2025).  
+          Attestation required for basic allowance.  
+          Receipts required for tech replacement, car rental, or lithium battery claims. (DSSR 252.1(b))</li>
+      
+          <li><strong>Wardrobe Allowance:</strong>  
+          ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
+      
+          <li><strong>Pet Shipment:</strong>  
+          ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+      
+          <li><strong>Total Actual HSTA Estimate:</strong>  
+          ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+        </ul>
+      `;
+    
     // === Updated Notes Section for Actual
     document.getElementById('actual-notes').innerHTML = `
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 251.2(b)).</li>
-        <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
-        <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
+        <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 251.2(a), 251.2(b)). Family size does not increase the lodging allowance.</li>
+        <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
+        <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days).</li>
+          <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
+          <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
         <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week in 2025).  
