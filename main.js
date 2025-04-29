@@ -565,22 +565,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // === Clean Reset Button Handler
-  const resetButton = document.getElementById('reset-form');
-  if (resetButton) {
-    resetButton.addEventListener('click', () => {
-      const form = document.getElementById('hsta-form');
-      if (form) {
-        form.reset();
-        form.style.display = 'block'; // Make sure form is visible again
-      }
-  
-      document.getElementById('results-section').style.display = 'none';
-      document.querySelector('.container').classList.remove('show-results');
-  
-      console.log('Form reset and results cleared.');
-    });
-  }
+// === Reset Form Button Handler (Full Page Reload)
+const resetButton = document.getElementById('reset-form');
+if (resetButton) {
+  resetButton.addEventListener('click', () => {
+    window.scrollTo(0, 0); // Optional: scroll user back to top
+    window.location.reload(); // Reloads the page, clears all form fields, resets layout
+  });
+}
 
   const printButton = document.getElementById('print-results');
   if (printButton) {
