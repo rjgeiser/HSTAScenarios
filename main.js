@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fixedActualRecommendation = document.getElementById('fixed-actual-recommendation');
     fixedActualRecommendation.innerHTML = actualTotal > fixedTotal
       ? `<p>We recommend pursuing the <strong>Actual HSTA option</strong> based on your inputs (~${Math.round(actualTotal - fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
-      : `<p>We recommend pursuing the <strong>Fixed HSTA option</strong> based on your inputs (higher or comparable benefit).</p>`;
+      : `<p>We recommend pursuing the <strong>Fixed HSTA option</strong> based on your inputs (~${Math.round(fixedTotal - actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`;
     
     // === USAID vs State Clarifications
     const usaidMiscTotal = Math.min(finalMiscCap, extraClaims);
