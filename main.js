@@ -16,8 +16,8 @@ const PER_DIEM_LODGING = 110; // Lodging component
 const PER_DIEM_MIE = 68;      // Meals and Incidental Expenses component
 
 // GS-13 Step 10 Weekly Cap for Miscellaneous Expenses (Approximate for 2025)
-const GS13_STEP10_HOURLY = 52.66;
-const GS13_STEP10_WEEKLY = 2106.40;
+const GS13_STEP10_WEEKLY = 2243.20;
+const finalMiscCap = Math.min(userSalaryCap, formData.hasFamily ? 4486.40 : 2243.20);
 
 // Parse Local Date From Input (prevents UTC offset errors)
 function parseLocalDate(inputId) {
@@ -272,6 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fsStep: parseInt(document.getElementById('fs-step').value),
       permHousing: document.getElementById('perm-housing').value === 'yes',
       moveInDate: document.getElementById('move-in-date').value ? parseLocalDate('move-in-date') : null,
+      hheDeliveryDate: document.getElementById('hhe-delivery-date')?.value ? new Date(document.getElementById('hhe-delivery-date').value) : null,
       shippingCar: document.getElementById('shipping-car').value === 'yes',
       shippingPet: document.getElementById('shipping-pet').value === 'yes',
       departureCountry: document.getElementById('departure-country').value.trim(),
@@ -286,6 +287,30 @@ document.addEventListener('DOMContentLoaded', () => {
       privateEndDate: document.getElementById('private-end-date').value ? parseLocalDate('private-end-date') : null,
     };
 
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const departureDate = formData.departureDate;
+    const separationDate = formData.separationDate;
+    const moveInDate = formData.moveInDate || new Date('9999-12-31');
+    const hheDeliveryDate = formData.hheDeliveryDate || new Date('9999-12-31');
+    
+    // Lodging ends at the earliest of: separation, permanent housing, or 60 days
+    const lodgingCutoff = new Date(Math.min(
+      separationDate.getTime(),
+      moveInDate.getTime(),
+      departureDate.getTime() + 60 * MS_PER_DAY
+    ));
+    
+    // M&IE ends at the earliest of: separation, HHE delivery, or 60 days
+    const mieCutoff = new Date(Math.min(
+      separationDate.getTime(),
+      hheDeliveryDate.getTime(),
+      departureDate.getTime() + 60 * MS_PER_DAY
+    ));
+
+    // Precalculate eligible days
+    const lodgingDays = Math.max(0, Math.floor((lodgingCutoff - departureDate) / MS_PER_DAY));
+    const mieDays = Math.max(0, Math.floor((mieCutoff - departureDate) / MS_PER_DAY));
+    
     // === Validation
     const errorDiv = document.getElementById('form-errors');
     errorDiv.innerHTML = '';
@@ -358,7 +383,14 @@ document.addEventListener('DOMContentLoaded', () => {
         currentDate >= formData.privateStartDate &&
         currentDate <= formData.privateEndDate;
     
-      const applicablePerDiem = inPrivateLodging ? PER_DIEM_MIE : PER_DIEM_TOTAL;
+      const lodgingEligible = i < lodgingDays;
+      const mieEligible = i < mieDays;
+    
+      const applicablePerDiem = mieEligible
+        ? (inPrivateLodging || !lodgingEligible ? PER_DIEM_MIE : PER_DIEM_TOTAL)
+        : 0;
+    
+      if (applicablePerDiem === 0) continue;
     
       // Employee Rate
       const empRate = isFirst30 ? 1.0 : 0.75;
@@ -379,7 +411,6 @@ document.addEventListener('DOMContentLoaded', () => {
       : 0;
     const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
     const gs13WeeklyCap = GS13_STEP10_HOURLY * (formData.hasFamily ? 80 : 40);
-    const finalMiscCap = Math.min(weeklySalaryCap, gs13WeeklyCap);
     const extraClaims = (formData.techEstimate || 0) + (formData.batteryEstimate || 0) + (formData.carRentalEstimate || 0);
     const actualMisc = Math.min(finalMiscCap, extraClaims);
 
@@ -434,19 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fixedActualRecommendation = document.getElementById('fixed-actual-recommendation');
     fixedActualRecommendation.innerHTML = actualTotal > fixedTotal
       ? `<p>We recommend pursuing the <strong>Actual HSTA option</strong> based on your inputs (~${Math.round(actualTotal - fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
-      : `<p>We recommend pursuing the <strong>Fixed HSTA option</strong> based on your inputs (~${Math.round(fixedTotal - actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`;
-    
-    // === USAID vs State Clarifications
-    const usaidMiscTotal = Math.min(finalMiscCap, extraClaims);
-    const stateMiscTotal = actualMisc;
-    
-    document.getElementById('usaid-breakdown').innerHTML = `
-      <p><strong>Miscellaneous (Itemized with Tech/Car/Battery):</strong> ${Math.round(usaidMiscTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
-    `;
-    
-    document.getElementById('state-breakdown').innerHTML = `
-      <p><strong>Miscellaneous (Strict DSSR Interpretation):</strong> ${Math.round(stateMiscTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
-    `;
+      : `<p>We recommend pursuing the <strong>Fixed HSTA option</strong> based on your inputs (~${Math.round(fixedTotal - actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
 
     // === Fixed HSTA Voucher Summary
     document.getElementById('fixed-summary').innerHTML = `
@@ -563,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 251.2(b)).</li>
-        <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 251.2(a), 251.2(b)). Family size does not increase the lodging allowance.</li>
+        <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 251.2(a), 251.2(b)). Family size does not increase the lodging allowance. Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
         <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
         <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days).</li>
           <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
@@ -572,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
         <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week in 2025).  
             Attestation required for base allowance.  
-            Receipts required for technology device(s), car rental, or lithium battery removal claims with 30 days to purchase any replacements and submit receipts. (DSSR 252.1(b))</li>
+            Tech device(s) purchase/car rental/lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
       </ul>
     `;
     
