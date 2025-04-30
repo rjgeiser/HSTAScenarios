@@ -287,21 +287,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const separationDate = formData.separationDate;
+    const departureDate = formData.departureDate;
     const moveInDate = formData.moveInDate || new Date('9999-12-31');
     const hheDeliveryDate = formData.hheDeliveryDate || new Date('9999-12-31');
     
-    // Lodging ends at the earliest of: separation, permanent housing, or 60 days
+    // Lodging days end at the earlier of separation, move-in, or 60 days
     const lodgingCutoff = new Date(Math.min(
-      separationDate,
-      moveInDate,
-      departureDate + 60 * MS_PER_DAY
+      separationDate.getTime(),
+      moveInDate?.getTime() || new Date('9999-12-31').getTime(),
+      departureDate.getTime() + 60 * 24 * 60 * 60 * 1000
     ));
     
-    // M&IE ends at the earliest of: separation, HHE delivery, or 60 days
+    // M&IE days end at the earlier of separation, HHE delivery, or 60 days
     const mieCutoff = new Date(Math.min(
-      separationDate,
-      hheDeliveryDate,
-      departureDate + 60 * MS_PER_DAY
+      separationDate.getTime(),
+      hheDeliveryDate?.getTime() || new Date('9999-12-31').getTime(),
+      departureDate.getTime() + 60 * 24 * 60 * 60 * 1000
     ));
 
     // Precalculate eligible days
