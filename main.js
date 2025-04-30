@@ -607,8 +607,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </ul>
           </ul>
         </ul>
-      `;    
-    
           <li><strong>Miscellaneous Expense:</strong>  
             <ul>
               <li>Capped for an employee without family, up to the lesser of one week's salary for the employee or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
