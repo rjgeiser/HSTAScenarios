@@ -288,8 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const MS_PER_DAY = 1000 * 60 * 60 * 24;
-    const departureDate = formData.departureDate;
-    const separationDate = formData.separationDate;
     const moveInDate = formData.moveInDate || new Date('9999-12-31');
     const hheDeliveryDate = formData.hheDeliveryDate || new Date('9999-12-31');
     
@@ -347,7 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==== Calculations
-    const MS_PER_DAY = 1000 * 60 * 60 * 24;
     const CONUS_RATE = 168;
     const daysBetween = Math.floor((formData.separationDate - formData.departureDate) / MS_PER_DAY);
     const eligibleDays = Math.min(60, Math.max(0, daysBetween));
