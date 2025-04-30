@@ -597,9 +597,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <li>for an employee with family, up to the lesser of two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
               <li>Attestation required for basic allowance.</li>
               <li>Receipts required for tech device(s) and or lithium battery claims. (DSSR 252.1(b))</li>
-              <li><p><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 252.1(b)(3)(i))</small> ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</p></li>
+              <li><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 252.1(b)(3)(i))</small> ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
             </ul>
-      
           <li><strong>Wardrobe Allowance:</strong>  
           ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
       
