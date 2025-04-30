@@ -430,8 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const childMIE2 = childDaysAfter30 * PER_DIEM_MIE * 0.4;
     const lodgingTotal = reimbursableLodgingDays * PER_DIEM_LODGING;
     
-    const actualSubsistence = empMIE1 + empMIE2 + adultMIE1 + adultMIE2 + childMIE1 + childMIE2 + lodgingTotal;
-    const totalActualSubsistence = actualSubsistence;
+    const totalActualSubsistence = empMIE1 + empMIE2 + adultMIE1 + adultMIE2 + childMIE1 + childMIE2 + lodgingTotal;
     
     // Defining Lodging Reimbursable Days
     let lodgingReimbursableDays = 0;
@@ -468,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const actualWardrobe = getWardrobeAllowance(formData.departureCountry, 1, formData.hasFamily);
     const actualPet = formData.shippingPet ? 4000 : 0;
-    const actualTotal = actualSubsistence + actualMisc + actualWardrobe + actualPet;
+    const actualTotal = totalActualSubsistence + actualMisc + actualWardrobe + actualPet;
 
     // === Scenario Summary
     const scenarioSummary = document.getElementById('scenario-summary');
@@ -510,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     
     document.getElementById('actual-breakdown').innerHTML = `
-      <p><strong>Subsistence (up to 60 days):</strong> ${Math.round(actualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(b))</small></p>
+      <p><strong>Subsistence (up to 60 days):</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(b))</small></p>
       <p><strong>Miscellaneous Expense (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(b))</small></p>
       <p><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 242.1)</small></p>
       <p><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(14 FAM 615.3)</small></p>
@@ -587,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('actual-summary').innerHTML = `
         <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Total Reimbursable Subsistence:</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li><strong>Total Reimbursable Subsistence:</strong> ${totalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
           <li><strong>Subsistence Breakdown:</strong></li>
           <ul>
             <li>Lodging (family unit): ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${lodgingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
