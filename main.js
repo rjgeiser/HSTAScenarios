@@ -403,6 +403,25 @@ document.addEventListener('DOMContentLoaded', () => {
       actualSubsistence += applicablePerDiem * efmChildRate * childEFMs;
     }
 
+    // Defining Lodging Reimbursable Days
+    let lodgingReimbursableDays = 0;
+
+    for (let i = 0; i < lodgingDays; i++) {
+      const currentDate = new Date(departureDate);
+      currentDate.setDate(currentDate.getDate() + i);
+    
+      const inPrivateLodging =
+        formData.privateLodging &&
+        formData.privateStartDate &&
+        formData.privateEndDate &&
+        currentDate >= formData.privateStartDate &&
+        currentDate <= formData.privateEndDate;
+    
+      if (!inPrivateLodging) {
+        lodgingReimbursableDays++;
+      }
+    }
+    
     // Miscellaneous (Actual)
     const salaryHourly = FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep] 
       ? FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087
@@ -427,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Fixed HSTA Eligible Days:</strong> ${fixedDays} day(s)</li>
           <li><strong>Actual HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
             <ul>
-              <li><strong>Eligbile Lodging Days:</strong> ${lodgingDays} day(s)</li>
+              <li><strong>Eligbile Lodging Days:</strong> ${lodgingReimbursableDays} day(s)</li>
               <li><strong>Eligible M&IE Days:</strong> ${mieDays} day(s)</li>
             </ul>
         </ul></div>
