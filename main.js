@@ -373,41 +373,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const adultEFMs = formData.numEFMs - formData.numChildren;
     const childEFMs = formData.numChildren;
     
-    for (let i = 0; i < eligibleDays; i++) {
-      const currentDate = new Date(formData.departureDate);
+    // Initialize day counters
+    let empDaysFirst30 = 0, empDaysAfter30 = 0;
+    let adultDaysFirst30 = 0, adultDaysAfter30 = 0;
+    let childDaysFirst30 = 0, childDaysAfter30 = 0;
+    let reimbursableLodgingDays = 0;
+    
+    // Inside the daily subsistence loop:
+    for (let i = 0; i < Math.max(lodgingDays, mieDays); i++) {
+      const currentDate = new Date(departureDate);
       currentDate.setDate(currentDate.getDate() + i);
     
       const isFirst30 = i < 30;
-      
+    
       const inPrivateLodging =
         formData.privateLodging &&
         formData.privateStartDate &&
         formData.privateEndDate &&
         currentDate >= formData.privateStartDate &&
         currentDate <= formData.privateEndDate;
-
+    
       const lodgingEligible = i < lodgingDays;
       const mieEligible = i < mieDays;
-  
+    
       const applicablePerDiem = mieEligible
         ? (inPrivateLodging || !lodgingEligible ? PER_DIEM_MIE : PER_DIEM_TOTAL)
         : 0;
     
       if (applicablePerDiem === 0) continue;
     
-      // Employee Rate
-      const empRate = isFirst30 ? 1.0 : 0.75;
-      actualSubsistence += applicablePerDiem * empRate;
+      // Tally M&IE days
+      if (mieEligible) {
+        if (isFirst30) {
+          empDaysFirst30++;
+          adultDaysFirst30 += adultEFMs;
+          childDaysFirst30 += childEFMs;
+        } else {
+          empDaysAfter30++;
+          adultDaysAfter30 += adultEFMs;
+          childDaysAfter30 += childEFMs;
+        }
+      }
     
-      // Adult EFMs Rate
-      const efmAdultRate = isFirst30 ? 0.75 : 0.5;
-      actualSubsistence += applicablePerDiem * efmAdultRate * adultEFMs;
-    
-      // Child EFMs Rate
-      const efmChildRate = isFirst30 ? 0.5 : 0.4;
-      actualSubsistence += applicablePerDiem * efmChildRate * childEFMs;
+      // Tally reimbursable lodging days (family unit only)
+      if (lodgingEligible && !inPrivateLodging) {
+        reimbursableLodgingDays++;
+      }
     }
-
+    
+    // Compute monetary totals using full formula
+    const empMIE1 = empDaysFirst30 * PER_DIEM_MIE * 1.0;
+    const empMIE2 = empDaysAfter30 * PER_DIEM_MIE * 0.75;
+    const adultMIE1 = adultDaysFirst30 * PER_DIEM_MIE * 0.75;
+    const adultMIE2 = adultDaysAfter30 * PER_DIEM_MIE * 0.5;
+    const childMIE1 = childDaysFirst30 * PER_DIEM_MIE * 0.5;
+    const childMIE2 = childDaysAfter30 * PER_DIEM_MIE * 0.4;
+    const lodgingTotal = reimbursableLodgingDays * PER_DIEM_LODGING;
+    
+    const actualSubsistence = empMIE1 + empMIE2 + adultMIE1 + adultMIE2 + childMIE1 + childMIE2 + lodgingTotal;
+    const totalActualSubsistence = actualSubsistence;
+    
     // Defining Lodging Reimbursable Days
     let lodgingReimbursableDays = 0;
 
@@ -562,37 +587,29 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('actual-summary').innerHTML = `
         <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Subsistence Allowance:</strong></li>
+          <li><strong>Total Reimbursable Subsistence:</strong> ${actualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li><strong>Subsistence Breakdown:</strong></li>
           <ul>
-            <li><strong>Lodging Allowance:</strong></li>
+            <li>Lodging (family unit): ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${lodgingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            <li><strong>M&IE — Employee:</strong></li>
             <ul>
-              ${formData.privateLodging ? `
-                <li>Private Lodging Selected: Lodging reimbursement not applicable from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}.</li>
-              ` : `
-                <li>Lodging reimbursement calculated as 1 unit per family per day: ${eligibleDays} days × $${PER_DIEM_LODGING} = ${(eligibleDays * PER_DIEM_LODGING).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              `}
+              <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${empMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${empMIE2.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
             </ul>
-        
-            <li><strong>Meals and Incidental Expenses (M&IE):</strong></li>
+            <li><strong>M&IE — Adult EFMs (${adultEFMs}):</strong></li>
             <ul>
-              <li>Employee:</li>
-              <ul>
-                <li>${employeeFirst30Days} days × 100% of $${PER_DIEM_MIE} = ${(employeeFirst30Days * PER_DIEM_MIE * 1.0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-                <li>${employeeAfter30Days} days × 75% of $${PER_DIEM_MIE} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.75).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              </ul>
-              <li>Adult EFMs (${adultEFMs}):</li>
-              <ul>
-                <li>${employeeFirst30Days} days × 75% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.75 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-                <li>${employeeAfter30Days} days × 50% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.5 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              </ul>
-              <li>Children Under 12 (${childEFMs}):</li>
-              <ul>
-                <li>${employeeFirst30Days} days × 50% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.5 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-                <li>${employeeAfter30Days} days × 40% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.4 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              </ul>
+              <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% = ${adultMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% = ${adultMIE2.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            </ul>
+            <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
+            <ul>
+              <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% = ${childMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% = ${childMIE2.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
             </ul>
           </ul>
-      
+        </ul>
+      `;    
+    
           <li><strong>Miscellaneous Expense:</strong>  
             <ul>
               <li>Capped for an employee without family, up to the lesser of one week's salary for the employee or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
@@ -616,8 +633,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('actual-notes').innerHTML = `
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
-        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 251.2(b)).</li>
-        <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 251.2(a), 251.2(b)). Family size does not increase the lodging allowance. Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
+        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
+        <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 252.3(a)). Family size does not increase the lodging allowance. Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
         <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
         <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days).</li>
           <ul>
