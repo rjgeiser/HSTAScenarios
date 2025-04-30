@@ -291,7 +291,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const departureDate = formData.departureDate;
     const moveInDate = formData.moveInDate || new Date('9999-12-31');
     const hheDeliveryDate = formData.hheDeliveryDate || new Date('9999-12-31');
-    const carRental = (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0;
+    const rawCarRental = (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0; 
+    const maxCarRentalCap = lodgingReimbursableDays * PER_DIEM_LODGING;
+    const carRental = Math.min(rawCarRental, maxCarRentalCap);
     
     // Lodging days end at the earlier of separation, move-in, or 60 days
     const lodgingCutoff = new Date(Math.min(
@@ -595,9 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <li>for an employee with family, up to the lesser of two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
               <li>Attestation required for basic allowance.</li>
               <li>Receipts required for tech device(s) and or lithium battery claims. (DSSR 252.1(b))</li>
-              <li><p><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} 
-              <br><small>(DSSR 252.1(b)(3)(i))</small> ${formData.rentingCar && !formData.shippingCar ? `<br><small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}
-              </p></li>
+              <li><p><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 252.1(b)(3)(i))</small> ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</p></li>
             </ul>
       
           <li><strong>Wardrobe Allowance:</strong>  
@@ -630,7 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <li>Capped for an employee without family - lesser of one week of employee's salary or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
             <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
             <li>Tech device(s) purchase and lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
-            <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period.</li>
+            <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period and not to exceed the CONUS daily lodging rate (e.g., $110/day in 2024).</li>
           </ul>
       </ul>
     `;
