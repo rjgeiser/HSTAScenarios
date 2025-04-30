@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
       departureCountry: document.getElementById('departure-country').value.trim(),
       techIssues: document.getElementById('tech-issues').value === 'yes',
       lithiumRemoval: document.getElementById('lithium-removal').value === 'yes',
-      carRental: (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0,
+      rentingCar: document.getElementById('renting-car').value === 'yes',
       techEstimate: parseFloat(document.getElementById('tech-estimate')?.value || 0),
       carRentalEstimate: parseFloat(document.getElementById('car-estimate')?.value || 0),
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0),
@@ -291,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const departureDate = formData.departureDate;
     const moveInDate = formData.moveInDate || new Date('9999-12-31');
     const hheDeliveryDate = formData.hheDeliveryDate || new Date('9999-12-31');
+    const carRental = (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0;
     
     // Lodging days end at the earlier of separation, move-in, or 60 days
     const lodgingCutoff = new Date(Math.min(
