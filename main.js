@@ -427,8 +427,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Fixed HSTA Eligible Days:</strong> ${fixedDays} day(s)</li>
           <li><strong>Actual HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
             <ul>
-              <li><strong>Eligbile Lodging Days:</strong> ${lodgingDays} day(s)</li>
-              <li><strong>Eligible M&IE Days:</strong> ${mieDays} day(s)</li>
+              <li><strong>Eligbile Lodging Days:</strong> ${lodgingEligible} day(s)</li>
+              <li><strong>Eligible M&IE Days:</strong> ${mieEligible} day(s)</li>
             </ul>
         </ul></div>
         <div><h4>Family Information</h4><ul>
