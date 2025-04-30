@@ -291,9 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const departureDate = formData.departureDate;
     const moveInDate = formData.moveInDate || new Date('9999-12-31');
     const hheDeliveryDate = formData.hheDeliveryDate || new Date('9999-12-31');
-    const rawCarRental = (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0; 
-    const maxCarRentalCap = lodgingReimbursableDays * PER_DIEM_LODGING;
-    const carRental = Math.min(rawCarRental, maxCarRentalCap);
     
     // Lodging days end at the earlier of separation, move-in, or 60 days
     const lodgingCutoff = new Date(Math.min(
@@ -429,6 +426,11 @@ document.addEventListener('DOMContentLoaded', () => {
         lodgingReimbursableDays++;
       }
     }
+
+    //Car Rental Maximum
+    const rawCarRental = (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0; 
+    const maxCarRentalCap = lodgingReimbursableDays * PER_DIEM_LODGING;
+    const carRental = Math.min(rawCarRental, maxCarRentalCap);
     
     // Miscellaneous (Actual)
     const salaryHourly = FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep] 
