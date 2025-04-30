@@ -292,16 +292,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Lodging ends at the earliest of: separation, permanent housing, or 60 days
     const lodgingCutoff = new Date(Math.min(
-      separationDate.getTime(),
-      moveInDate.getTime(),
-      departureDate.getTime() + 60 * MS_PER_DAY
+      separationDate,
+      moveInDate,
+      departureDate + 60 * MS_PER_DAY
     ));
     
     // M&IE ends at the earliest of: separation, HHE delivery, or 60 days
     const mieCutoff = new Date(Math.min(
-      separationDate.getTime(),
-      hheDeliveryDate.getTime(),
-      departureDate.getTime() + 60 * MS_PER_DAY
+      separationDate,
+      hheDeliveryDate,
+      departureDate + 60 * MS_PER_DAY
     ));
 
     // Precalculate eligible days
