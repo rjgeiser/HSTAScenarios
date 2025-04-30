@@ -326,14 +326,14 @@
       <fieldset>
         <legend>Optional Reimbursement Triggers</legend>
 
-        <label for="tech-issues">Did local conditions damage your tech devices?</label>
+        <label for="tech-issues">Did you (or will you) self certify that you are eligible for technology device(s) purchase and reimbursement?</label>
         <select id="tech-issues" name="tech-issues">
           <option value="no">No</option>
           <option value="yes">Yes</option>
         </select>
 
         <div id="tech-cost-section" style="display:none;">
-          <label for="tech-estimate">Estimated Tech Replacement Cost ($):</label>
+          <label for="tech-estimate">Estimated Tech Device(s) Cost ($):</label>
           <input type="number" id="tech-estimate" name="tech-estimate" step="0.01" min="0">
         </div>
 
@@ -388,23 +388,6 @@
   </div>
 
   <div id="fixed-actual-recommendation" class="recommendation-banner"></div>
-
-  <h2>USAID vs State Department Allowance Comparison</h2>
-  <p class="dual-note">
-    The estimates below show allowance calculations based on both <strong>USAID RIF guidance</strong> (permissive inclusion of certain expenses) and <strong>State Department DSSR guidance</strong> (more restrictive interpretation). This clarifies allowable miscellaneous itemization under different policies.
-  </p>
-
-  <div class="dual-result-row">
-    <div class="dual-result-card" id="usaid-card">
-      <h3>USAID Estimate</h3>
-      <div id="usaid-breakdown"></div>
-    </div>
-
-    <div class="dual-result-card" id="state-card">
-      <h3>State Department Estimate</h3>
-      <div id="state-breakdown"></div>
-    </div>
-  </div>
 
   <div class="post-results-buttons">
     <p class="print-note">Tip: Use the "Print Results" button to save a clean copy of your estimate as a PDF for your records.</p>
