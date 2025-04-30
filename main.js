@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Permanent Housing Planned:</strong> ${formData.permHousing ? 'Yes' : 'No'}</li>
           <li><strong>Shipping POV:</strong> ${formData.shippingCar ? 'Yes' : 'No'}</li>
           <li><strong>Shipping Pet:</strong> ${formData.shippingPet ? 'Yes' : 'No'}</li>
-          <li><strong>Tech Replacement Claimed:</strong> ${formData.techIssues ? 'Yes' : 'No'}</li>
+          <li><strong>Tech Device(s) Claimed:</strong> ${formData.techIssues ? 'Yes' : 'No'}</li>
           <li><strong>Lithium Battery Claimed:</strong> ${formData.lithiumRemoval ? 'Yes' : 'No'}</li>
           <li><strong>Car Rental Claimed:</strong> ${formData.rentingCar ? 'Yes' : 'No'}</li>
         </ul></div>
@@ -545,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Miscellaneous Expense:</strong>  
           Eligible up to GS-13 Step 10 weekly cap (~$2,106/week in 2025).  
           Attestation required for basic allowance.  
-          Receipts required for tech replacement, car rental, or lithium battery claims. (DSSR 252.1(b))</li>
+          Receipts required for tech device(s), car rental, or lithium battery claims. (DSSR 252.1(b))</li>
       
           <li><strong>Wardrobe Allowance:</strong>  
           ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
         <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week in 2025).  
             Attestation required for base allowance.  
-            Receipts required for technology replacement, car rental, or lithium battery removal claims. (DSSR 252.1(b))</li>
+            Receipts required for technology device(s), car rental, or lithium battery removal claims with 30 days to purchase any replacements and submit receipts. (DSSR 252.1(b))</li>
       </ul>
     `;
     
