@@ -578,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const childEFMSubsistenceAfter30 = 168 * 0.4 * employeeAfter30Days * childEFMs;
     
     // Totals
-    const totalActualSubsistence = employeeSubsistenceFirst30 + employeeSubsistenceAfter30 +
+    const fullTotalActualSubsistence = employeeSubsistenceFirst30 + employeeSubsistenceAfter30 +
                                    adultEFMSubsistenceFirst30 + adultEFMSubsistenceAfter30 +
                                    childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
     
@@ -586,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('actual-summary').innerHTML = `
         <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Total Reimbursable Subsistence:</strong> ${totalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li><strong>Total Reimbursable Subsistence:</strong> ${fullTotalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
           <li><strong>Subsistence Breakdown:</strong></li>
           <ul>
             <li>Lodging (family unit): ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${lodgingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
