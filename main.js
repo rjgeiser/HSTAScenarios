@@ -355,6 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const employeeFixedSubsistence = PER_DIEM_TOTAL * 0.75 * fixedDays;
     const efmFixedSubsistence = PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays;
     const fixedSubsistence = employeeFixedSubsistence + efmFixedSubsistence;
+    const lodgingEligible = i < lodgingDays;
+    const mieEligible = i < mieDays;
 
     // Other HSTA Calculations
     const fixedMisc = formData.hasFamily ? 1500 : 750;
@@ -380,9 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.privateEndDate &&
         currentDate >= formData.privateStartDate &&
         currentDate <= formData.privateEndDate;
-    
-      const lodgingEligible = i < lodgingDays;
-      const mieEligible = i < mieDays;
     
       const applicablePerDiem = mieEligible
         ? (inPrivateLodging || !lodgingEligible ? PER_DIEM_MIE : PER_DIEM_TOTAL)
