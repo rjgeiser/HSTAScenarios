@@ -586,10 +586,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('actual-summary').innerHTML = `
         <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Total Reimbursable Subsistence:</strong> ${fullTotalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li><strong>Total Reimbursable Subsistence:</strong> ${TotalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
           <li><strong>Subsistence Breakdown:</strong></li>
           <ul>
-            <li>Lodging (family unit): ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${lodgingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            <li><strong>Lodging (family unit)</strong>: ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${lodgingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
             <li><strong>M&IE — Employee:</strong></li>
             <ul>
               <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${empMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
