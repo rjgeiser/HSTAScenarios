@@ -426,6 +426,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Departure Country:</strong> ${formData.departureCountry}</li>
           <li><strong>Fixed HSTA Eligible Days:</strong> ${fixedDays} day(s)</li>
           <li><strong>Actual HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
+            <ul>
+              <li><strong>Eligbile Lodging Days:</strong> ${lodgingDays} day(s)</li>
+              <li><strong>Eligible M&IE Days:</strong> ${mieDays} day(s)</li>
+            </ul>
         </ul></div>
         <div><h4>Family Information</h4><ul>
           <li><strong>Number of EFMs:</strong> ${formData.numEFMs} (${formData.numChildren} under 12)</li>
@@ -529,33 +533,34 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('actual-summary').innerHTML = `
         <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Subsistence Allowance (Lodging and M&IE separated):</strong></li>
-      
-          <li><strong>Lodging Allowance:</strong></li>
+          <li><strong>Subsistence Allowance:</strong></li>
           <ul>
-            ${formData.privateLodging ? `
-              <li>Private Lodging Selected: Lodging reimbursement not applicable from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}.</li>
-            ` : `
-              <li>Lodging reimbursement calculated as 1 unit per family per day: ${eligibleDays} days × $${PER_DIEM_LODGING} = ${(eligibleDays * PER_DIEM_LODGING).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-            `}
-          </ul>
-      
-          <li><strong>Meals and Incidental Expenses (M&IE):</strong></li>
-          <ul>
-            <li>Employee:</li>
+            <li><strong>Lodging Allowance:</strong></li>
             <ul>
-              <li>${employeeFirst30Days} days × 100% of $${PER_DIEM_MIE} = ${(employeeFirst30Days * PER_DIEM_MIE * 1.0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              <li>${employeeAfter30Days} days × 75% of $${PER_DIEM_MIE} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.75).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              ${formData.privateLodging ? `
+                <li>Private Lodging Selected: Lodging reimbursement not applicable from ${formData.privateStartDate ? formData.privateStartDate.toLocaleDateString() : ''} to ${formData.privateEndDate ? formData.privateEndDate.toLocaleDateString() : ''}.</li>
+              ` : `
+                <li>Lodging reimbursement calculated as 1 unit per family per day: ${eligibleDays} days × $${PER_DIEM_LODGING} = ${(eligibleDays * PER_DIEM_LODGING).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              `}
             </ul>
-            <li>Adult EFMs (${adultEFMs}):</li>
+        
+            <li><strong>Meals and Incidental Expenses (M&IE):</strong></li>
             <ul>
-              <li>${employeeFirst30Days} days × 75% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.75 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              <li>${employeeAfter30Days} days × 50% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.5 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-            </ul>
-            <li>Children Under 12 (${childEFMs}):</li>
-            <ul>
-              <li>${employeeFirst30Days} days × 50% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.5 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              <li>${employeeAfter30Days} days × 40% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.4 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>Employee:</li>
+              <ul>
+                <li>${employeeFirst30Days} days × 100% of $${PER_DIEM_MIE} = ${(employeeFirst30Days * PER_DIEM_MIE * 1.0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+                <li>${employeeAfter30Days} days × 75% of $${PER_DIEM_MIE} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.75).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              </ul>
+              <li>Adult EFMs (${adultEFMs}):</li>
+              <ul>
+                <li>${employeeFirst30Days} days × 75% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.75 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+                <li>${employeeAfter30Days} days × 50% of $${PER_DIEM_MIE} × ${adultEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.5 * adultEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              </ul>
+              <li>Children Under 12 (${childEFMs}):</li>
+              <ul>
+                <li>${employeeFirst30Days} days × 50% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeFirst30Days * PER_DIEM_MIE * 0.5 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+                <li>${employeeAfter30Days} days × 40% of $${PER_DIEM_MIE} × ${childEFMs} = ${(employeeAfter30Days * PER_DIEM_MIE * 0.4 * childEFMs).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              </ul>
             </ul>
           </ul>
       
