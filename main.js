@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
       departureCountry: document.getElementById('departure-country').value.trim(),
       techIssues: document.getElementById('tech-issues').value === 'yes',
       lithiumRemoval: document.getElementById('lithium-removal').value === 'yes',
-      rentingCar: document.getElementById('renting-car').value === 'yes',
+      carRental: (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0,
       techEstimate: parseFloat(document.getElementById('tech-estimate')?.value || 0),
       carRentalEstimate: parseFloat(document.getElementById('car-estimate')?.value || 0),
       batteryEstimate: parseFloat(document.getElementById('battery-estimate')?.value || 0),
@@ -343,6 +343,11 @@ document.addEventListener('DOMContentLoaded', () => {
           errors.push("Private Lodging End Date cannot be before Private Lodging Start Date.");
         }
       }
+    }
+
+    // === Car Rental Validation
+    if (formData.rentingCar && !formData.shippingCar) {
+      errors.push("Car rental allowance is only reimbursable if a POV is being shipped through the U.S. Government.");
     }
 
     // ==== Calculations
@@ -588,7 +593,10 @@ document.addEventListener('DOMContentLoaded', () => {
               <li>Capped for an employee without family, up to the lesser of one week's salary for the employee or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
               <li>for an employee with family, up to the lesser of two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
               <li>Attestation required for basic allowance.</li>
-              <li>Receipts required for tech device(s), car rental, or lithium battery claims. (DSSR 252.1(b))</li>
+              <li>Receipts required for tech device(s) and or lithium battery claims. (DSSR 252.1(b))</li>
+              <li><p><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} 
+              <br><small>(DSSR 252.1(b)(3)(i))</small> ${formData.rentingCar && !formData.shippingCar ? `<br><small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}
+              </p></li>
             </ul>
       
           <li><strong>Wardrobe Allowance:</strong>  
@@ -620,7 +628,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <ul>
             <li>Capped for an employee without family - lesser of one week of employee's salary or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
             <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
-            <li>Tech device(s) purchase/car rental/lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
+            <li>Tech device(s) purchase and lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
+            <li><p><strong>Car Rental:</strong> Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period and cannot exceed the standard per diem eligibility.</li>
           </ul>
       </ul>
     `;
