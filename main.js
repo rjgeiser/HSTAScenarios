@@ -560,9 +560,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>
       
           <li><strong>Miscellaneous Expense:</strong>  
-          Eligible up to GS-13 Step 10 weekly cap (~$2,106/week in 2025).  
-          Attestation required for basic allowance.  
-          Receipts required for tech device(s), car rental, or lithium battery claims. (DSSR 252.1(b))</li>
+            <ul>
+              <li>Capped for an employee without family, up to the lesser of one week's salary for the employee or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
+              <li>for an employee with family, up to the lesser of two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
+              <li>Attestation required for basic allowance.</li>
+              <li>Receipts required for tech device(s), car rental, or lithium battery claims. (DSSR 252.1(b))</li>
+            </ul>
       
           <li><strong>Wardrobe Allowance:</strong>  
           ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
@@ -583,13 +586,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 251.2(a), 251.2(b)). Family size does not increase the lodging allowance. Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
         <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
         <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days).</li>
+          <ul>
           <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
           <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
+          </ul>        
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
-        <li>Miscellaneous expenses capped at GS-13 Step 10 weekly rate (~$2,106/week in 2025).  
-            Attestation required for base allowance.  
-            Tech device(s) purchase/car rental/lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
+        <li>Miscellaneous expenses:
+          <ul>
+            <li>Capped for an employee without family - lesser of one week of employee's salary or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
+            <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
+            <li>Tech device(s) purchase/car rental/lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
+          </ul>
       </ul>
     `;
     
