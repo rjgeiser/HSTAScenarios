@@ -355,9 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const employeeFixedSubsistence = PER_DIEM_TOTAL * 0.75 * fixedDays;
     const efmFixedSubsistence = PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays;
     const fixedSubsistence = employeeFixedSubsistence + efmFixedSubsistence;
-    const lodgingEligible = i < lodgingDays;
-    const mieEligible = i < mieDays;
-
+    
     // Other HSTA Calculations
     const fixedMisc = formData.hasFamily ? 1500 : 750;
     const fixedWardrobe = getWardrobeAllowance(formData.departureCountry, 1, formData.hasFamily);
@@ -382,7 +380,10 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.privateEndDate &&
         currentDate >= formData.privateStartDate &&
         currentDate <= formData.privateEndDate;
-    
+
+      const lodgingEligible = i < lodgingDays;
+      const mieEligible = i < mieDays;
+  
       const applicablePerDiem = mieEligible
         ? (inPrivateLodging || !lodgingEligible ? PER_DIEM_MIE : PER_DIEM_TOTAL)
         : 0;
@@ -426,8 +427,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Fixed HSTA Eligible Days:</strong> ${fixedDays} day(s)</li>
           <li><strong>Actual HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
             <ul>
-              <li><strong>Eligbile Lodging Days:</strong> ${lodgingEligible} day(s)</li>
-              <li><strong>Eligible M&IE Days:</strong> ${mieEligible} day(s)</li>
+              <li><strong>Eligbile Lodging Days:</strong> ${lodgingDays} day(s)</li>
+              <li><strong>Eligible M&IE Days:</strong> ${mieDays} day(s)</li>
             </ul>
         </ul></div>
         <div><h4>Family Information</h4><ul>
