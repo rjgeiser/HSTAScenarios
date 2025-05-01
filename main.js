@@ -609,53 +609,53 @@ document.addEventListener('DOMContentLoaded', () => {
       <h4>Summary for HSTA Voucher (Actual)</h4>
       <ul>
         <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
-    
-        <li><strong>Subsistence Breakdown:</strong></li>
         <ul>
-          <li><strong>Lodging:</strong>${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
-          
-          <ul>
-            <li><strong>Employee:</strong></li>
-              <ul>
-                <li>Employee: ${empLodgingFirst30} days × $${PER_DIEM_LODGING} × 100% = ${Math.round(empLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>Employee: ${empLodgingAfter30} days × $${PER_DIEM_LODGING} × 75% = ${Math.round(empLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              </ul>
-
-            <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
-              <ul>
-                <li>Adult EFMs: ${adultLodgingFirst30} days × $${PER_DIEM_LODGING} × 75% x ${adultEFMs} = ${Math.round(adultLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>Adult EFMs: ${adultLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              </ul>
-
-            <li><strong>Children (${childEFMs}:</strong></li>
-              <ul>
-                <li>Children: ${childLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% X ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              </ul>
-            </ul>
-          
-          <li><strong>M&IE:</strong>${Math.round(totalActualSubsistence-lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-
+          <li><strong>Subsistence Breakdown:</strong></li>
             <ul>
-            <li><strong>Employee:</strong></li>
-              <ul>
-                <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${Math.round(empMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(empMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+            <li><strong>Lodging:</strong> ${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+            
+            <ul>
+              <li><strong>Employee:</strong></li>
+                <ul>
+                  <li>Employee: ${empLodgingFirst30} days × $${PER_DIEM_LODGING} × 100% = ${Math.round(empLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Employee: ${empLodgingAfter30} days × $${PER_DIEM_LODGING} × 75% = ${Math.round(empLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+  
+              <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+                <ul>
+                  <li>Adult EFMs: ${adultLodgingFirst30} days × $${PER_DIEM_LODGING} × 75% x ${adultEFMs} = ${Math.round(adultLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Adult EFMs: ${adultLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+  
+              <li><strong>Children (${childEFMs}:</strong></li>
+                <ul>
+                  <li>Children: ${childLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% x ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
               </ul>
-      
-            <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+            
+            <li><strong>M&IE:</strong> ${Math.round(totalActualSubsistence-lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+  
               <ul>
-                <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% x ${adultEFMs} = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% x ${adultEFMs} = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              </ul>
-      
-            <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
-              <ul>
-                <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% x ${childEFMs} = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% x ${childEFMs} = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              </ul>
-        </ul>
-    
+              <li><strong>Employee:</strong></li>
+                <ul>
+                  <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${Math.round(empMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(empMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+        
+              <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+                <ul>
+                  <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% x ${adultEFMs} = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% x ${adultEFMs} = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+        
+              <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
+                <ul>
+                  <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% x ${childEFMs} = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% x ${childEFMs} = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+            </ul>
+          </ul>
         <li><strong>Miscellaneous Expense:</strong>  
           <ul>
             <li>Capped based on family status and employee salary.</li>
