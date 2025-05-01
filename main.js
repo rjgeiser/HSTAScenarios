@@ -570,8 +570,86 @@ document.addEventListener('DOMContentLoaded', () => {
                                    adultEFMSubsistenceFirst30 + adultEFMSubsistenceAfter30 +
                                    childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
     
-    // === Fully DSSR-Compliant Actual HSTA Subsistence Breakdown
-    document.getElementById('actual-summary').innerHTML = `
+    // === Fully DSSR-Compliant Misc Fixed Breakdown
+    document.getElementById('misc-fixed-breakdown').innerHTML = `
+      <h4>Summary for HSTA Voucher</h4>
+      <ul>
+        <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+        <ul>
+          <li><strong>Subsistence Breakdown:</strong></li>
+            <ul>
+            <li><strong>Lodging:</strong> ${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD',  minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+            
+            <ul>
+              <li><strong>Employee:</strong></li>
+                <ul>
+                  <li>Employee: ${empLodgingFirst30} days × $${PER_DIEM_LODGING} × 100% = ${Math.round(empLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Employee: ${empLodgingAfter30} days × $${PER_DIEM_LODGING} × 75% = ${Math.round(empLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+  
+              <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+                <ul>
+                  <li>Adult EFMs: ${adultLodgingFirst30} days × $${PER_DIEM_LODGING} × 75% x ${adultEFMs} = ${Math.round(adultLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Adult EFMs: ${adultLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+  
+              <li><strong>Children (${childEFMs}:</strong></li>
+                <ul>
+                  <li>Children: ${childLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% x ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+              </ul>
+            
+            <li><strong>M&IE:</strong> ${Math.round(totalActualSubsistence-lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+  
+              <ul>
+              <li><strong>Employee:</strong></li>
+                <ul>
+                  <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${Math.round(empMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(empMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+        
+              <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+                <ul>
+                  <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% x ${adultEFMs} = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% x ${adultEFMs} = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+        
+              <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
+                <ul>
+                  <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% x ${childEFMs} = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% x ${childEFMs} = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                </ul>
+            </ul>
+          </ul>
+    
+        <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
+        <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
+      </ul>
+      <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+    </ul>
+    `;
+
+    // === Updated Notes Section for Fixed
+    document.getElementById('misc-fixed-summary').innerHTML = `
+      <h4>Actual (Itemized) HSTA Summary</h4>
+      <ul>
+        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
+        <li>Lodging reimbursement under HSTA is calculated similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
+        <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
+        <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days). No receipts are needed.</li>
+          <ul>
+          <li>Employee reimbursed 100% of $68/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
+          <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
+          </ul>        
+        <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
+        <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
+        <li>Miscellaneous expenses:
+      </ul>
+    `;
+
+    // === Fully DSSR-Compliant Misc Itemized Breakdown
+    document.getElementById('misc-itemized-breakdown').innerHTML = `
       <h4>Summary for HSTA Voucher</h4>
       <ul>
         <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
@@ -630,8 +708,8 @@ document.addEventListener('DOMContentLoaded', () => {
     </ul>
     `;
     
-    // === Updated Notes Section for Actual
-    document.getElementById('actual-notes').innerHTML = `
+    // === Updated Notes Section for Itemized
+    document.getElementById('misc-itemized-summary').innerHTML = `
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
