@@ -483,7 +483,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ? FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087
       : 0;
     const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
-    const finalMiscCap = Math.min(weeklySalaryCap, formData.hasFamily ? 4486.40 : 2243.20)
+    const finalFixedMiscCap = Math.min(weeklySalaryCap, from.hasFamily ? 1500 : 750);
+    const finalMiscCap = Math.min(weeklySalaryCap, formData.hasFamily ? 4486.40 : 2243.20);
     const extraClaims = (formData.techEstimate || 0) + (formData.batteryEstimate || 0) + (formData.carRentalEstimate || 0);
     const actualMisc = Math.min(finalMiscCap, extraClaims);
 
@@ -615,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Miscellaneous (Fixed):</strong> ${fixedMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(a))</li>
+        <li><strong>Miscellaneous (Fixed):</strong> ${Math.round(finalFixedMiscCap).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(a))</li>
       </ul>
       <li><strong>Total with Fixed Misc HSTA Estimate:</strong> ${Math.round(totalWithFixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
     </ul>
@@ -635,7 +636,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>        
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
-        <li>Miscellaneous expenses
+        <li>Miscellaneous expenses (252.1(a)</li>
+          <ul>
+            <li>Capped for an employee without family - lesser of one week of employee's salary or $750; or</li>
+            <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or $1500.</li>
+          </ul>  
       </ul>
     `;
 
@@ -718,11 +723,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>        
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
-        <li>Miscellaneous expenses:
+        <li>Miscellaneous expenses (DSSR 252.1(b))</li>
           <ul>
             <li>Capped for an employee without family - lesser of one week of employee's salary or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
             <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
-            <li>Tech device(s) purchase and lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
+            <li>Tech device(s) purchase and lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner).</li>
             <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period.</li>
           </ul>
       </ul>
