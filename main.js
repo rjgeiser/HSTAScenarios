@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087
       : 0;
     const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
-    const finalFixedMiscCap = Math.min(weeklySalaryCap, from.hasFamily ? 1500 : 750);
+    const finalFixedMiscCap = Math.min(weeklySalaryCap, form.hasFamily ? 1500 : 750);
     const finalMiscCap = Math.min(weeklySalaryCap, formData.hasFamily ? 4486.40 : 2243.20);
     const extraClaims = (formData.techEstimate || 0) + (formData.batteryEstimate || 0) + (formData.carRentalEstimate || 0);
     const actualMisc = Math.min(finalMiscCap, extraClaims);
