@@ -612,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <ul>
           <li><strong>Subsistence Breakdown:</strong></li>
             <ul>
-            <li><strong>Lodging:</strong> ${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+            <li><strong>Lodging:</strong> ${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD',  minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             
             <ul>
               <li><strong>Employee:</strong></li>
@@ -667,8 +667,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
       </ul>
+      <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+    </ul>
     `;
     
     // === Updated Notes Section for Actual
@@ -678,9 +679,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
         <li>Lodging reimbursement under HSTA is calculated similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
         <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
-        <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days).</li>
+        <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days). No receipts are needed.</li>
           <ul>
-          <li>Employee reimbursed 100% of $178/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
+          <li>Employee reimbursed 100% of $68/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
           <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
           </ul>        
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
