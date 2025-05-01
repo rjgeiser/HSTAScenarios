@@ -586,24 +586,24 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('actual-summary').innerHTML = `
         <h4>Summary for HSTA Voucher (Actual)</h4>
         <ul>
-          <li><strong>Total Reimbursable Subsistence:</strong> ${totalActualSubsistence.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
           <li><strong>Subsistence Breakdown:</strong></li>
           <ul>
-            <li><strong>Lodging (family unit)</strong>: ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${lodgingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+            <li><strong>Lodging (family unit)</strong>: ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             <li><strong>M&IE — Employee:</strong></li>
             <ul>
-              <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${empMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${empMIE2.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${Math.round(empMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+              <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(empMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             </ul>
             <li><strong>M&IE — Adult EFMs (${adultEFMs}):</strong></li>
             <ul>
-              <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% = ${adultMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% = ${adultMIE2.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+              <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             </ul>
             <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
             <ul>
-              <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% = ${childMIE1.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
-              <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% = ${childMIE2.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+              <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+              <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             </ul>
           </ul>
         </ul>
@@ -613,16 +613,16 @@ document.addEventListener('DOMContentLoaded', () => {
               <li>for an employee with family, up to the lesser of two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
               <li>Attestation required for basic allowance.</li>
               <li>Receipts required for tech device(s) and or lithium battery claims. (DSSR 252.1(b))</li>
-              <li><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} <small>(DSSR 252.1(b)(3)(i))</small> ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
+              <li><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)(3)(i)) ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
             </ul>
           <li><strong>Wardrobe Allowance:</strong>  
-          ${actualWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
+          ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0})} (DSSR 242.1)</li>
       
           <li><strong>Pet Shipment:</strong>  
-          ${actualPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
+          ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
       
           <li><strong>Total Actual HSTA Estimate:</strong>  
-          ${actualTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+          ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
         </ul>
       `;
     
