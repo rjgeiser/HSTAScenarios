@@ -448,13 +448,11 @@ document.addEventListener('DOMContentLoaded', () => {
       adultLodging1 + adultLodging2 +
       childLodging1 + childLodging2;
     
-    const actualSubsistence =
+    const totalActualSubsistence =
       empMIE1 + empMIE2 +
       adultMIE1 + adultMIE2 +
       childMIE1 + childMIE2 +
       lodgingTotal;
-    
-    const totalActualSubsistence = actualSubsistence;
     
     // Defining Lodging Reimbursable Days
     let lodgingReimbursableDays = 0;
@@ -636,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </ul>
             </ul>
           
-          <li><strong>M&IE:</strong>${Math.round(actualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}-${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+          <li><strong>M&IE:</strong>${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}-${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
 
             <ul>
             <li><strong>Employee:</strong></li>
