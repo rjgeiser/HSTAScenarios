@@ -572,9 +572,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // === Fully DSSR-Compliant Misc Fixed Breakdown
     document.getElementById('misc-fixed-breakdown').innerHTML = `
-      <h4>Summary for HSTA Voucher</h4>
+      <h4>Summary for Fixed Misc HSTA Voucher</h4>
       <ul>
-        <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+        <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} (DSSR 251.2(b))</li>
         <ul>
           <li><strong>Subsistence Breakdown:</strong></li>
             <ul>
@@ -593,10 +593,10 @@ document.addEventListener('DOMContentLoaded', () => {
                   <li>Adult EFMs: ${adultLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
                 </ul>
   
-              <li><strong>Children (${childEFMs}:</strong></li>
+              <li><strong>Children (${childEFMs}):</strong></li>
                 <ul>
                   <li>Children: ${childLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% x ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% x ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
                 </ul>
               </ul>
             
@@ -626,13 +626,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
       </ul>
-      <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+      <li><strong>Total with Fixed Misc HSTA Estimate:</strong> ${Math.round(totalWithFixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
     </ul>
     `;
 
     // === Updated Notes Section for Fixed
     document.getElementById('misc-fixed-summary').innerHTML = `
-      <h4>Actual (Itemized) HSTA Summary</h4>
+      <h4>Fixed Misc HSTA Notes</h4>
       <ul>
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
         <li>Lodging reimbursement under HSTA is calculated similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
@@ -644,15 +644,15 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>        
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
         <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet (14 FAM 615.3).</li>
-        <li>Miscellaneous expenses:
+        <li>Miscellaneous expenses
       </ul>
     `;
 
     // === Fully DSSR-Compliant Misc Itemized Breakdown
     document.getElementById('misc-itemized-breakdown').innerHTML = `
-      <h4>Summary for HSTA Voucher</h4>
+      <h4>Summary for Itemized Misc HSTA Voucher</h4>
       <ul>
-        <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
+        <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })} (DSSR 251.2(b))</li>
         <ul>
           <li><strong>Subsistence Breakdown:</strong></li>
             <ul>
@@ -704,13 +704,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
       </ul>
-      <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+      <li><strong>Total with Itemized Misc HSTA Estimate:</strong> ${Math.round(totalWithActualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
     </ul>
     `;
     
     // === Updated Notes Section for Itemized
     document.getElementById('misc-itemized-summary').innerHTML = `
-      <h4>Actual (Itemized) HSTA Summary</h4>
+      <h4>Itemized Misc HSTA Notes</h4>
       <ul>
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
         <li>Lodging reimbursement under HSTA is calculated similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
