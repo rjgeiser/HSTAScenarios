@@ -727,7 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <ul>
             <li>Capped for an employee without family - lesser of one week of employee's salary or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
             <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
-            <li>Tech device(s) purchase and lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner).</li>
+            <li>Tech device(s) purchase and lithium reimbursements require completing the <a href="https://docs.google.com/document/d/14RUp_XRlYTjIgkwa0lYqifz1nvmh-0ZXtaO32nKeg-8/edit?usp=sharing" target="_blank">Self-Certification Form</a> submission with voucher and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner).</li>
             <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period.</li>
           </ul>
       </ul>
