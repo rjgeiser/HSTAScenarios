@@ -490,7 +490,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const actualWardrobe = getWardrobeAllowance(formData.departureCountry, 1, formData.hasFamily);
     const actualPet = formData.shippingPet ? 4000 : 0;
     const actualTotal = totalActualSubsistence + actualMisc + actualWardrobe + actualPet;
-
+    
+    // Totals with Fixed and Itemized Miscellaneous
+    const totalWithFixedMisc = totalActualSubsistence + actualWardrobe + actualPet + fixedMisc;
+    const totalWithActualMisc = actualTotal; // actualMisc already included in actualTotal
+    
     // === Scenario Summary
     const scenarioSummary = document.getElementById('scenario-summary');
     scenarioSummary.innerHTML = `
@@ -522,25 +526,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
      // === Shared Allowances: Lodging + M&IE + Wardrobe + Pet
     document.getElementById('actual-breakdown').innerHTML = `
-      <p><strong>Subsistence (Itemized - up to 60 days):</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(b))</small></p>
+      <p><strong>Subsistence (up to Separation Date or 60 days, whichever is earlier):</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(b))</small></p>
       <p><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 242.1)</small></p>
       <p><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(14 FAM 615.3)</small></p>
-    `;
-    
-    // === Fixed Miscellaneous Card
-    const totalWithFixedMisc = totalActualSubsistence + actualWardrobe + actualPet + fixedMisc;
-    
-    document.getElementById('misc-fixed-breakdown').innerHTML = `
-      <p><strong>Miscellaneous (Fixed):</strong> ${fixedMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(a))</small></p>
-      <p><strong>Total Estimate:</strong> ${Math.round(totalWithFixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
-    `;
-
-    // === Itemized Miscellaneous Card
-    const totalWithActualMisc = actualTotal; // actualMisc already included in actualTotal
-    
-    document.getElementById('misc-itemized-breakdown').innerHTML = `
-      <p><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(b))</small></p>
-      <p><strong>Total Estimate:</strong> ${Math.round(totalWithActualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
     `;
     
     // === Recommendation Based on Miscellaneous
@@ -625,6 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li><strong>Miscellaneous (Fixed):</strong> ${fixedMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(a))</li>
       </ul>
       <li><strong>Total with Fixed Misc HSTA Estimate:</strong> ${Math.round(totalWithFixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
     </ul>
@@ -703,8 +692,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
+        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b))</li>
       </ul>
       <li><strong>Total with Itemized Misc HSTA Estimate:</strong> ${Math.round(totalWithActualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+      <ul>
+        <li>Tech Device(s):  </li>
+        <li>Lithium-Ion Batteries:  </li>
+        <li>Car Rental:  </li>
     </ul>
     `;
     
