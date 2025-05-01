@@ -15,7 +15,7 @@ const PER_DIEM_TOTAL = 178;   // Total daily per diem ($110 lodging + $68 M&IE)
 const PER_DIEM_LODGING = 110; // Lodging component
 const PER_DIEM_MIE = 68;      // Meals and Incidental Expenses component
 
-// GS-13 Step 10 Weekly Cap for Miscellaneous Expenses (Approximate for 2025)
+// GS-13 Step 10 Weekly Cap for Miscellaneous Expenses (Approximate for 2025)https://rjgeiser.github.io/HSTAScenarios/
 const GS13_STEP10_WEEKLY = 2243.20;
 
 // Parse Local Date From Input (prevents UTC offset errors)
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087
       : 0;
     const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
-    const finalFixedMiscCap = Math.min(weeklySalaryCap, form.hasFamily ? 1500 : 750);
+    const finalFixedMiscCap = Math.min(fixedMisc, weeklySalaryCap);
     const finalMiscCap = Math.min(weeklySalaryCap, formData.hasFamily ? 4486.40 : 2243.20);
     const extraClaims = (formData.techEstimate || 0) + (formData.batteryEstimate || 0) + (formData.carRentalEstimate || 0);
     const actualMisc = Math.min(finalMiscCap, extraClaims);
