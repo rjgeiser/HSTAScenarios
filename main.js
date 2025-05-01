@@ -602,14 +602,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
               <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
                 <ul>
-                  <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% x ${adultEFMs} = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                  <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% x ${adultEFMs} = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 75% x ${adultEFMs} = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${empLodgingAfter30} days × $${PER_DIEM_MIE} × 50% x ${adultEFMs} = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
                 </ul>
         
               <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
                 <ul>
-                  <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% x ${childEFMs} = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                  <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% x ${childEFMs} = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 50% x ${childEFMs} = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>${empLodgingAfter30} days × $${PER_DIEM_MIE} × 40% x ${childEFMs} = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
                 </ul>
             </ul>
           </ul>
@@ -663,14 +663,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
               <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
                 <ul>
-                  <li>Adult EFMs: ${adultLodgingFirst30} days × $${PER_DIEM_LODGING} × 75% x ${adultEFMs} = ${Math.round(adultLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                  <li>Adult EFMs: ${adultLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Adult EFMs: ${empLodgingFirst30} days × $${PER_DIEM_LODGING} × 75% x ${adultEFMs} = ${Math.round(adultLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Adult EFMs: ${empLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
                 </ul>
   
-              <li><strong>Children (${childEFMs}:</strong></li>
+              <li><strong>Children (${childEFMs}):</strong></li>
                 <ul>
-                  <li>Children: ${childLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-                <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% x ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                  <li>Children: ${empLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+                <li>Children: ${empLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% x ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
                 </ul>
               </ul>
             
@@ -699,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)) ${extraClaims > actualMisc ? `<small style="color:red;">Estimated optional Misc claims exceed maximum Misc amount (per guidance). Maximum shown.</small>` : ''}</li>
+        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)) ${extraClaims > actualMisc ? `<small style="color:red;">Estimated claims exceed maximum Misc amount shown.</small>` : ''}</li>
           <ul>
             <li><strong>Tech Device(s):</strong> ${Math.round(techAmount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             <li><strong>Lithium-Ion Batteries:</strong> ${Math.round(batteryAmount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
