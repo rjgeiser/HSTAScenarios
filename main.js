@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
-        <li>Subsistence: ${fixedDays} days × 75% M&IE rate of $168 = ${Math.round(168 * 0.75 * fixedDays).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 251.2(a))</li>
+        <li>Subsistence:${fixedDays} days × 75% M&IE rate of $168 = ${Math.round(168 * 0.75 * fixedDays).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 251.2(a))</li>
         <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
         <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
@@ -538,14 +538,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
-        <li>Subsistence Allowance:</li>
+        <li><strong?Subsistence Allowance:</strong></li>
         <ul>
-          <li>Employee: ${fixedDays} days × 75% of $178 = ${Math.round(PER_DIEM_TOTAL * 0.75 * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-          <li>EFMs (${formData.numEFMs}): ${fixedDays} days × 25% of $178 × ${formData.numEFMs} = ${Math.round(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+          <li><strong>Employee:</strong> ${fixedDays} days × 75% of $178 = ${Math.round(PER_DIEM_TOTAL * 0.75 * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+          <li><strong>EFMs (${formData.numEFMs}):</strong> ${fixedDays} days × 25% of $178 × ${formData.numEFMs} = ${Math.round(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
         </ul>
-        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required (DSSR 252.1(a))</li>
-        <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
-        <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} — receipts required (14 FAM 615.3)</li>
+        <li><strong>Miscellaneous Expense:</strong> Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required (DSSR 252.1(a))</li>
+        <li><strong>Wardrobe Allowance:</strong> ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
+        <li><strong>Pet Shipment:</strong> ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} — receipts required (14 FAM 615.3)</li>
         <li><strong>Total Fixed HSTA Estimate:</strong> ${Math.round(fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
       </ul>
     `;
