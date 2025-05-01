@@ -626,12 +626,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('misc-fixed-summary').innerHTML = `
       <h4>Fixed Misc HSTA Notes</h4>
       <ul>
-        <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
-        <li>Lodging reimbursement under HSTA is calculated similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
+        <li>Subsistence expenses can be claimed for up to 60 days after arrival in the U.S. (or RIF date, if sooner) (DSSR 253.2(a)).</li>
+        <li>Lodging reimbursement under HSTA is calculated on a sliding scale similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
         <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
         <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days). No receipts are needed.</li>
           <ul>
-          <li>Employee reimbursed 100% of $68/day for first 30 days, 75% thereafter; only $68/day (M&IE) reimbursed during private lodging periods.</li>
+          <li>Employee reimbursed 100% of $68/day for first 30 days, 75% thereafter; only M&IE paid during private lodging periods.</li>
           <li>Adult EFMs reimbursed 75%/50% of applicable daily rate; children under 12 reimbursed 50%/40% of applicable daily rate.</li>
           </ul>        
         <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
