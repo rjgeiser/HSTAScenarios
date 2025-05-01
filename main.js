@@ -528,7 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     
     // === Fixed Miscellaneous Card
-    const fixedMisc = formData.hasFamily ? 1500 : 750;
     const totalWithFixedMisc = totalActualSubsistence + actualWardrobe + actualPet + fixedMisc;
     
     document.getElementById('misc-fixed-breakdown').innerHTML = `
