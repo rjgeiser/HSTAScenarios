@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
-        <li>Subsistence:${fixedDays} days × 75% M&IE rate of $168 = ${Math.round(168 * 0.75 * fixedDays).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 251.2(a))</li>
+        <li>Subsistence:${fixedDays} days × 75% M&IE rate of $168 = ${Math.round((PER_DIEM_TOTAL * 0.75 * fixedDays)+(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 251.2(a))</li>
         <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
         <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
@@ -538,7 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fixed-summary').innerHTML = `
       <h4>Summary for HSTA Voucher (Fixed)</h4>
       <ul>
-        <li><strong?Subsistence Allowance:</strong></li>
+        <li><strong>Total Subsistence Allowance:</strong> ${Math.round((PER_DIEM_TOTAL * 0.75 * fixedDays)+(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
         <ul>
           <li><strong>Employee:</strong> ${fixedDays} days × 75% of $178 = ${Math.round(PER_DIEM_TOTAL * 0.75 * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
           <li><strong>EFMs (${formData.numEFMs}):</strong> ${fixedDays} days × 25% of $178 × ${formData.numEFMs} = ${Math.round(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
