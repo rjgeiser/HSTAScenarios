@@ -557,6 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullTotalActualSubsistence = employeeSubsistenceFirst30 + employeeSubsistenceAfter30 +
                                    adultEFMSubsistenceFirst30 + adultEFMSubsistenceAfter30 +
                                    childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
+    const techAmount = (formData.techEstimate || 0);
+    const batteryAmount = (formData.batteryEstimate || 0);
     
     // === Fully DSSR-Compliant Misc Fixed Breakdown
     document.getElementById('misc-fixed-breakdown').innerHTML = `
@@ -692,14 +694,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b))</li>
+        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)) ${extraClaims > actualMisc ? `<small style="color:red;">Estimated optional Misc claims exceed maximum Misc amount (per guidance). Maximum shown.</small>` : ''}</li>
+          <ul>
+            <li><strong>Tech Device(s):</strong> ${Math.round(techAmount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+            <li><strong>Lithium-Ion Batteries:</strong> ${Math.round(batteryAmount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+            <li><strong>Car Rental:</strong> ${Math.round(carRental).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)(3)(i)) ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
+        </ul>
       </ul>
       <li><strong>Total with Itemized Misc HSTA Estimate:</strong> ${Math.round(totalWithActualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-      <ul>
-        <li>Tech Device(s):  </li>
-        <li>Lithium-Ion Batteries:  </li>
-        <li>Car Rental:  </li>
-    </ul>
     `;
     
     // === Updated Notes Section for Itemized
