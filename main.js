@@ -499,8 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><strong>Arrival Date to U.S.:</strong> ${formData.departureDate.toLocaleDateString()}</li>
           <li><strong>Separation Date:</strong> ${formData.separationDate.toLocaleDateString()}</li>
           <li><strong>Departure Country:</strong> ${formData.departureCountry}</li>
-          <li><strong>Fixed HSTA Eligible Days:</strong> ${fixedDays} day(s)</li>
-          <li><strong>Actual HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
+          <li><strong>HSTA Eligible Days:</strong> ${eligibleDays} day(s)</li>
             <ul>
               <li><strong>Eligbile Lodging Days:</strong> ${lodgingReimbursableDays} day(s)</li>
               <li><strong>Eligible M&IE Days:</strong> ${mieDays} day(s)</li>
@@ -521,68 +520,36 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    // === Results: Fixed and Actual Breakdown + Citations
-    document.getElementById('fixed-breakdown').innerHTML = `
-      <p><strong>Subsistence (30 days max):</strong> ${Math.round(fixedSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(a))</small></p>
-      <p><strong>Miscellaneous Expense:</strong> ${Math.round(fixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(a))</small></p>
-      <p><strong>Wardrobe Allowance:</strong> ${Math.round(fixedWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 242.1)</small></p>
-      <p><strong>Pet Shipment:</strong> ${Math.round(fixedPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(14 FAM 615.3)</small></p>
-      <hr><p><strong>Total Fixed Estimate:</strong> ${Math.round(fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
-    `;
-    
+     // === Shared Allowances: Lodging + M&IE + Wardrobe + Pet
     document.getElementById('actual-breakdown').innerHTML = `
-      <p><strong>Subsistence (up to 60 days):</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(b))</small></p>
-      <p><strong>Miscellaneous Expense (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(b))</small></p>
+      <p><strong>Subsistence (Itemized - up to 60 days):</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 251.2(b))</small></p>
       <p><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 242.1)</small></p>
       <p><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(14 FAM 615.3)</small></p>
-      <hr><p><strong>Total Actual Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
     `;
     
-    // === Recommendation
-    const fixedActualRecommendation = document.getElementById('fixed-actual-recommendation');
-    fixedActualRecommendation.innerHTML = actualTotal > fixedTotal
-      ? `<p>We recommend pursuing the <strong>Actual HSTA option</strong> based on your inputs (~${Math.round(actualTotal - fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
-      : `<p>We recommend pursuing the <strong>Fixed HSTA option</strong> based on your inputs (~${Math.round(fixedTotal - actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
+    // === Fixed Miscellaneous Card
+    const fixedMisc = formData.hasFamily ? 1500 : 750;
+    const totalWithFixedMisc = totalActualSubsistence + actualWardrobe + actualPet + fixedMisc;
+    
+    document.getElementById('misc-fixed-breakdown').innerHTML = `
+      <p><strong>Miscellaneous (Fixed):</strong> ${fixedMisc.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(a))</small></p>
+      <p><strong>Total Estimate:</strong> ${Math.round(totalWithFixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+    `;
 
-    // === Fixed HSTA Voucher Summary
-    document.getElementById('fixed-summary').innerHTML = `
-      <h4>Summary for HSTA Voucher (Fixed)</h4>
-      <ul>
-        <li>Subsistence:${fixedDays} days × 75% M&IE rate of $168 = ${Math.round((PER_DIEM_TOTAL * 0.75 * fixedDays)+(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 251.2(a))</li>
-        <li>Miscellaneous Expense: Flat $${formData.hasFamily ? '1,500' : '750'} (DSSR 252.1(a))</li>
-        <li>Wardrobe Allowance: ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (DSSR 242.1)</li>
-        <li>Pet Shipment: ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Total Fixed HSTA Estimate:</strong> ${Math.round(fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-      </ul>
+    // === Itemized Miscellaneous Card
+    const totalWithActualMisc = actualTotal; // actualMisc already included in actualTotal
+    
+    document.getElementById('misc-itemized-breakdown').innerHTML = `
+      <p><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} <small>(DSSR 252.1(b))</small></p>
+      <p><strong>Total Estimate:</strong> ${Math.round(totalWithActualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
     `;
     
-    // === Updated Fixed HSTA Voucher Summary
-    document.getElementById('fixed-summary').innerHTML = `
-      <h4>Summary for HSTA Voucher (Fixed)</h4>
-      <ul>
-        <li><strong>Total Subsistence Allowance:</strong> ${Math.round((PER_DIEM_TOTAL * 0.75 * fixedDays)+(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays)).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-        <ul>
-          <li><strong>Employee:</strong> ${fixedDays} days × 75% of $178 = ${Math.round(PER_DIEM_TOTAL * 0.75 * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-          <li><strong>EFMs (${formData.numEFMs}):</strong> ${fixedDays} days × 25% of $178 × ${formData.numEFMs} = ${Math.round(PER_DIEM_TOTAL * 0.25 * formData.numEFMs * fixedDays).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-        </ul>
-        <li><strong>Miscellaneous Expense:</strong> Flat $${formData.hasFamily ? '1,500' : '750'} — no receipts required (DSSR 252.1(a))</li>
-        <li><strong>Wardrobe Allowance:</strong> ${fixedWardrobe.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
-        <li><strong>Pet Shipment:</strong> ${fixedPet.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })} — receipts required (14 FAM 615.3)</li>
-        <li><strong>Total Fixed HSTA Estimate:</strong> ${Math.round(fixedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-      </ul>
-    `;
+    // === Recommendation Based on Miscellaneous
+    const recommendationDiv = document.getElementById('fixed-actual-recommendation');
+    recommendationDiv.innerHTML = totalWithActualMisc > totalWithFixedMisc
+      ? `<p>We recommend selecting the <strong>Itemized Miscellaneous option</strong> (~${Math.round(totalWithActualMisc - totalWithFixedMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
+      : `<p>We recommend selecting the <strong>Fixed Miscellaneous option</strong> for simplicity and a comparable benefit (~${Math.round(totalWithFixedMisc - totalWithActualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} more).</p>`
     
-    // === Updated Notes Section for Fixed
-    document.getElementById('fixed-notes').innerHTML = `
-      <h4>Fixed HSTA Summary</h4>
-      <ul>
-        <li>Subsistence reimbursed up to 30 days based on 75% of the full CONUS rate ($178) for employee; 25% of full CONUS rate ($178) per EFM. (DSSR 251.2(a))</li>
-        <li>Miscellaneous Expense flat $750 (single) or $1,500 (family), no receipts required. (DSSR 252.1(a))</li>
-        <li>Wardrobe allowance applies if transferring across climate zones (DSSR 242.1).</li>
-        <li>Pet shipment allowance reimbursed up to $4,000 per employee, not pet. (14 FAM 615.3)</li>
-      </ul>
-    `;
-        
      // === Updated Actual HSTA Voucher Summary (Full Detail)
     const employeeFirst30Days = Math.min(30, eligibleDays);
     const employeeAfter30Days = Math.max(eligibleDays - 30, 0);
@@ -606,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // === Fully DSSR-Compliant Actual HSTA Subsistence Breakdown
     document.getElementById('actual-summary').innerHTML = `
-      <h4>Summary for HSTA Voucher (Actual)</h4>
+      <h4>Summary for HSTA Voucher</h4>
       <ul>
         <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0  })}</li>
         <ul>
@@ -656,14 +623,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </ul>
           </ul>
-        <li><strong>Miscellaneous Expense:</strong>  
-          <ul>
-            <li>Capped based on family status and employee salary.</li>
-            <li>Attestation required for base allowance.</li>
-            <li>Receipts required for tech and battery claims.</li>
-            <li><strong>Car Rental:</strong> ${Math.round(carRental).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)(3)(i)) ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
-          </ul>
-        </li>
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
@@ -691,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <li>Capped for an employee without family - lesser of one week of employee's salary or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
             <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
             <li>Tech device(s) purchase and lithium reimbursements require self-certification and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner). (DSSR 252.1(b))</li>
-            <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period and not to exceed the CONUS daily lodging rate (e.g., $110/day in 2024).</li>
+            <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period.</li>
           </ul>
       </ul>
     `;
