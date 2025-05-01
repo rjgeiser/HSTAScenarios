@@ -367,23 +367,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const fixedPet = formData.shippingPet ? 4000 : 0;
     const fixedTotal = fixedSubsistence + fixedMisc + fixedWardrobe + fixedPet;
 
-    // Actual (Itemized) HSTA Calculation
     // === Updated Actual Subsistence Calculation
     let actualSubsistence = 0;
     const adultEFMs = formData.numEFMs - formData.numChildren;
     const childEFMs = formData.numChildren;
     
-    // Initialize day counters
+    // Day counters for M&IE
     let empDaysFirst30 = 0, empDaysAfter30 = 0;
     let adultDaysFirst30 = 0, adultDaysAfter30 = 0;
     let childDaysFirst30 = 0, childDaysAfter30 = 0;
-    let reimbursableLodgingDays = 0;
     
-    // Inside the daily subsistence loop:
+    // Day counters for Lodging
+    let empLodgingFirst30 = 0, empLodgingAfter30 = 0;
+    let adultLodgingFirst30 = 0, adultLodgingAfter30 = 0;
+    let childLodgingFirst30 = 0, childLodgingAfter30 = 0;
+    
+    // Loop through each day
     for (let i = 0; i < Math.max(lodgingDays, mieDays); i++) {
       const currentDate = new Date(departureDate);
       currentDate.setDate(currentDate.getDate() + i);
-    
       const isFirst30 = i < 30;
     
       const inPrivateLodging =
@@ -396,13 +398,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const lodgingEligible = i < lodgingDays;
       const mieEligible = i < mieDays;
     
-      const applicablePerDiem = mieEligible
-        ? (inPrivateLodging || !lodgingEligible ? PER_DIEM_MIE : PER_DIEM_TOTAL)
-        : 0;
+      const eligible = mieEligible || lodgingEligible;
+      if (!eligible || (mieEligible === false && lodgingEligible === false)) continue;
     
-      if (applicablePerDiem === 0) continue;
-    
-      // Tally M&IE days
+      // M&IE Tally
       if (mieEligible) {
         if (isFirst30) {
           empDaysFirst30++;
@@ -415,22 +414,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     
-      // Tally reimbursable lodging days (family unit only)
+      // Lodging Tally
       if (lodgingEligible && !inPrivateLodging) {
-        reimbursableLodgingDays++;
+        if (isFirst30) {
+          empLodgingFirst30++;
+          adultLodgingFirst30 += adultEFMs;
+          childLodgingFirst30 += childEFMs;
+        } else {
+          empLodgingAfter30++;
+          adultLodgingAfter30 += adultEFMs;
+          childLodgingAfter30 += childEFMs;
+        }
       }
     }
     
-    // Compute monetary totals using full formula
+    // === Compute Totals Using Sliding Rates
     const empMIE1 = empDaysFirst30 * PER_DIEM_MIE * 1.0;
     const empMIE2 = empDaysAfter30 * PER_DIEM_MIE * 0.75;
     const adultMIE1 = adultDaysFirst30 * PER_DIEM_MIE * 0.75;
     const adultMIE2 = adultDaysAfter30 * PER_DIEM_MIE * 0.5;
     const childMIE1 = childDaysFirst30 * PER_DIEM_MIE * 0.5;
     const childMIE2 = childDaysAfter30 * PER_DIEM_MIE * 0.4;
-    const lodgingTotal = reimbursableLodgingDays * PER_DIEM_LODGING;
     
-    const totalActualSubsistence = empMIE1 + empMIE2 + adultMIE1 + adultMIE2 + childMIE1 + childMIE2 + lodgingTotal;
+    const empLodging1 = empLodgingFirst30 * PER_DIEM_LODGING * 1.0;
+    const empLodging2 = empLodgingAfter30 * PER_DIEM_LODGING * 0.75;
+    const adultLodging1 = adultLodgingFirst30 * PER_DIEM_LODGING * 0.75;
+    const adultLodging2 = adultLodgingAfter30 * PER_DIEM_LODGING * 0.5;
+    const childLodging1 = childLodgingFirst30 * PER_DIEM_LODGING * 0.5;
+    const childLodging2 = childLodgingAfter30 * PER_DIEM_LODGING * 0.4;
+    
+    const lodgingTotal =
+      empLodging1 + empLodging2 +
+      adultLodging1 + adultLodging2 +
+      childLodging1 + childLodging2;
+    
+    const actualSubsistence =
+      empMIE1 + empMIE2 +
+      adultMIE1 + adultMIE2 +
+      childMIE1 + childMIE2 +
+      lodgingTotal;
+    
+    const totalActualSubsistence = actualSubsistence;
     
     // Defining Lodging Reimbursable Days
     let lodgingReimbursableDays = 0;
@@ -453,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Car Rental Maximum
     const rawCarRental = (formData.rentingCar && formData.shippingCar) ? (formData.carRentalEstimate || 0) : 0; 
-    const maxCarRentalCap = lodgingReimbursableDays * PER_DIEM_LODGING;
+    const maxCarRentalCap = eligibleDays * PER_DIEM_LODGING;
     const carRental = Math.min(rawCarRental, maxCarRentalCap);
     
     // Miscellaneous (Actual)
@@ -583,55 +607,78 @@ document.addEventListener('DOMContentLoaded', () => {
                                    childEFMSubsistenceFirst30 + childEFMSubsistenceAfter30;
     
     // === Fully DSSR-Compliant Actual HSTA Subsistence Breakdown
-      document.getElementById('actual-summary').innerHTML = `
-        <h4>Summary for HSTA Voucher (Actual)</h4>
+    document.getElementById('actual-summary').innerHTML = `
+      <h4>Summary for HSTA Voucher (Actual)</h4>
+      <ul>
+        <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</li>
+    
+        <li><strong>Subsistence Breakdown:</strong></li>
         <ul>
-          <li><strong>Total Reimbursable Subsistence:</strong> ${Math.round(totalActualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-          <li><strong>Subsistence Breakdown:</strong></li>
+          <li><strong>Lodging:</strong>${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+          
           <ul>
-            <li><strong>Lodging (family unit)</strong>: ${reimbursableLodgingDays} days × $${PER_DIEM_LODGING} = ${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-            <li><strong>M&IE — Employee:</strong></li>
-            <ul>
-              <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${Math.round(empMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(empMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
+            <li><strong>Employee:</strong></li>
+              <ul>
+                <li>Employee: ${empLodgingFirst30} days × $${PER_DIEM_LODGING} × 100% = ${Math.round(empLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+                <li>Employee: ${empLodgingAfter30} days × $${PER_DIEM_LODGING} × 75% = ${Math.round(empLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              </ul>
+
+            <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+              <ul>
+                <li>Adult EFMs: ${adultLodgingFirst30} days × $${PER_DIEM_LODGING} × 75% x ${adultEFMs} = ${Math.round(adultLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+                <li>Adult EFMs: ${adultLodgingAfter30} days × $${PER_DIEM_LODGING} × 50% x ${adultEFMs} = ${Math.round(adultLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              </ul>
+
+            <li><strong>Children (${childEFMs}:</strong></li>
+              <ul>
+                <li>Children: ${childLodgingFirst30} days × $${PER_DIEM_LODGING} × 50% x ${childEFMs} = ${Math.round(childLodging1).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              <li>Children: ${childLodgingAfter30} days × $${PER_DIEM_LODGING} × 40% X ${childEFMs} = ${Math.round(childLodging2).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              </ul>
             </ul>
-            <li><strong>M&IE — Adult EFMs (${adultEFMs}):</strong></li>
+          
+          <li><strong>M&IE:</strong>${Math.round(actualSubsistence).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}-${Math.round(lodgingTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+
             <ul>
-              <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-            </ul>
+            <li><strong>Employee:</strong></li>
+              <ul>
+                <li>${empDaysFirst30} days × $${PER_DIEM_MIE} × 100% = ${Math.round(empMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+                <li>${empDaysAfter30} days × $${PER_DIEM_MIE} × 75% = ${Math.round(empMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              </ul>
+      
+            <li><strong>Adult EFM(s) (${adultEFMs}):</strong></li>
+              <ul>
+                <li>${adultDaysFirst30} days × $${PER_DIEM_MIE} × 75% x ${adultEFMs} = ${Math.round(adultMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+                <li>${adultDaysAfter30} days × $${PER_DIEM_MIE} × 50% x ${adultEFMs} = ${Math.round(adultMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              </ul>
+      
             <li><strong>M&IE — Children Under 12 (${childEFMs}):</strong></li>
-            <ul>
-              <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-              <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-            </ul>
+              <ul>
+                <li>${childDaysFirst30} days × $${PER_DIEM_MIE} × 50% x ${childEFMs} = ${Math.round(childMIE1).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+                <li>${childDaysAfter30} days × $${PER_DIEM_MIE} × 40% x ${childEFMs} = ${Math.round(childMIE2).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+              </ul>
+        </ul>
+    
+        <li><strong>Miscellaneous Expense:</strong>  
+          <ul>
+            <li>Capped based on family status and employee salary.</li>
+            <li>Attestation required for base allowance.</li>
+            <li>Receipts required for tech and battery claims.</li>
+            <li><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} (DSSR 252.1(b)(3)(i)) ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
           </ul>
-        </ul>
-          <li><strong>Miscellaneous Expense:</strong>  
-            <ul>
-              <li>Capped for an employee without family, up to the lesser of one week's salary for the employee or one week's salary for an employee at GS-13, step 10 ($2,243.20); or</li>
-              <li>for an employee with family, up to the lesser of two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
-              <li>Attestation required for basic allowance.</li>
-              <li>Receipts required for tech device(s) and or lithium battery claims. (DSSR 252.1(b))</li>
-              <li><strong>Car Rental:</strong> ${carRental.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)(3)(i)) ${formData.rentingCar && !formData.shippingCar ? `<small style="color:red;">Not reimbursable: POV is not being shipped (per guidance).</small>` : ''}</li>
-            </ul>
-          <li><strong>Wardrobe Allowance:</strong>  
-          ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0})} (DSSR 242.1)</li>
-      
-          <li><strong>Pet Shipment:</strong>  
-          ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
-      
-          <li><strong>Total Actual HSTA Estimate:</strong>  
-          ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
-        </ul>
-      `;
+        </li>
+    
+        <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD' })} (DSSR 242.1)</li>
+        <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD' })} (14 FAM 615.3)</li>
+        <li><strong>Total Actual HSTA Estimate:</strong> ${Math.round(actualTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
+      </ul>
+    `;
     
     // === Updated Notes Section for Actual
     document.getElementById('actual-notes').innerHTML = `
       <h4>Actual (Itemized) HSTA Summary</h4>
       <ul>
         <li>Subsistence reimbursable up to 60 days based on actual lodging and meals incurred after arrival in the U.S. (DSSR 253.2(a)).</li>
-        <li>Lodging reimbursement under HSTA is calculated as a single lodging unit per family per night (DSSR 252.3(a)). Family size does not increase the lodging allowance. Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
+        <li>Lodging reimbursement under HSTA is calculated similar to M&IE (see below). Lodging receipts must be submitted. Lodging taxes reimbursed separately.</li>
         <li>During periods of Private Lodging (family/friends), no lodging reimbursement is authorized. M&IE remains reimbursable.</li>
         <li>Meals and Incidental Expenses (M&IE) are calculated separately for the employee and each eligible family member, using DSSR percentage rates based on age and time frame (first 30 days vs 31–60 days).</li>
           <ul>
