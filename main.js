@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const actualTotal = totalActualSubsistence + actualMisc + actualWardrobe + actualPet;
     
     // Totals with Fixed and Itemized Miscellaneous
-    const totalWithFixedMisc = totalActualSubsistence + actualWardrobe + actualPet + fixedMisc;
+    const totalWithFixedMisc = totalActualSubsistence + actualWardrobe + actualPet + finalFixedMiscCap;
     const totalWithActualMisc = actualTotal; // actualMisc already included in actualTotal
     
     // === Scenario Summary
@@ -699,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         <li><strong>Wardrobe Allowance:</strong> ${Math.round(actualWardrobe).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 242.1)</li>
         <li><strong>Pet Shipment:</strong> ${Math.round(actualPet).toLocaleString('en-US', { style: 'currency', currency: 'USD',minimumFractionDigits: 0, maximumFractionDigits: 0 })} (14 FAM 615.3)</li>
-        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)) ${extraClaims > actualMisc ? `<small style="color:red;">Estimated claims exceed maximum Misc amount shown.</small>` : ''}</li>
+        <li><strong>Miscellaneous (Itemized):</strong> ${Math.round(actualMisc).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })} (DSSR 252.1(b)) ${extraClaims > finalMiscCap ? `<small style="color:red;">Claimed amount exceeds cap — maximum reimbursable shown.</small>` : ''}</li>
           <ul>
             <li><strong>Tech Device(s):</strong> ${Math.round(techAmount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
             <li><strong>Lithium-Ion Batteries:</strong> ${Math.round(batteryAmount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</li>
@@ -729,6 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <li>Capped for an employee with family - lesser of  two weeks' salary for the employee or two weeks' salary for an employee at GS-13, step 10 ($4,486.40).</li>
             <li>Tech device(s) purchase and lithium reimbursements require completing the <a href="https://docs.google.com/document/d/14RUp_XRlYTjIgkwa0lYqifz1nvmh-0ZXtaO32nKeg-8/edit?usp=sharing" target="_blank">Self-Certification Form</a> submission with voucher and receipts dated no more than 30 days before departure or 30 days after arrival (or separation date, whichever is sooner).</li>
             <li>Car rental reimbursement (with receipt) is only allowable when the employee is shipping a POV. The rental must be for use during the HSTA period.</li>
+            <li>If the total of tech, battery, and car rental exceeds the maximum allowable amount, only the capped maximum will be reimbursed.</li>
           </ul>
       </ul>
     `;
