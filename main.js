@@ -18,6 +18,9 @@ const PER_DIEM_MIE = 68;      // Meals and Incidental Expenses component
 // GS-13 Step 10 Weekly Cap for Miscellaneous Expenses (Approximate for 2025)https://rjgeiser.github.io/HSTAScenarios/
 const GS13_STEP10_WEEKLY = 2243.20;
 
+// Fallback hourly rate based on GS-13 Step 10 weekly salary (2243.20 / 40 hours)
+const FALLBACK_HOURLY_RATE = GS13_STEP10_WEEKLY / 40;
+
 // Parse Local Date From Input (prevents UTC offset errors)
 function parseLocalDate(inputId) {
   const input = document.getElementById(inputId).value;
@@ -479,9 +482,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const carRental = Math.min(rawCarRental, maxCarRentalCap);
     
     // Miscellaneous (Actual)
-    const salaryHourly = FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep] 
+    const salaryHourly = FS_SALARY_TABLE?.[formData.fsGrade]?.[formData.fsStep]
       ? FS_SALARY_TABLE[formData.fsGrade][formData.fsStep] / 2087
-      : 0;
+      : FALLBACK_HOURLY_RATE;
     const weeklySalaryCap = salaryHourly * (formData.hasFamily ? 80 : 40);
     const finalFixedMiscCap = Math.min(fixedMisc, weeklySalaryCap);
     const finalMiscCap = Math.min(weeklySalaryCap, formData.hasFamily ? 4486.40 : 2243.20);
